@@ -106,10 +106,9 @@ with gr.Blocks(title="AI Elektrik Bakım Ustası") as demo:
         send_btn = gr.Button("Gönder", scale=1, variant="primary")
 
     with gr.Row():
-        b1 = gr.Button(visible=False)
-        b2 = gr.Button(visible=False)
-        b3 = gr.Button(visible=False)
-
+        b1 = gr.Button(value=".", visible=False)
+        b2 = gr.Button(value=".", visible=False)
+        b3 = gr.Button(value=".", visible=False)
     reset = gr.Button("🔄 Sıfırla", variant="secondary")
 
     send_btn.click(
