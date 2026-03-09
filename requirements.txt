@@ -1,6 +1,6 @@
-gradio==5.20.0
-requests
-speechrecognition
+gradio==4.44.0          # ← Kritik: 5.20.0 yerine bunu koy, hata büyük ihtimalle gider
+requests                # istekler → requests
+speechrecognition       # konuşma tanıma → speechrecognition (eğer ses tanıma kullanıyorsan)
 pydub
 numpy
 ffmpeg-python
