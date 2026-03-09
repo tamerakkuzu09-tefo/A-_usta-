@@ -1,7 +1,2 @@
-gradio==5.23.0
-huggingface-hub==0.23.0
+gradio
 requests
-speechrecognition
-pydub
-numpy
-ffmpeg-python
