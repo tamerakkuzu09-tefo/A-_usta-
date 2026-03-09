@@ -57,7 +57,7 @@ def update_buttons(buttons):
         if i < len(buttons):
             updates.append(gr.update(value=buttons[i], visible=True))
         else:
-            updates.append(gr.update(visible=False))
+            updates.append(gr.update(value=" ", visible=False))
     return updates
 
 def handle_text_input(user_text, history):
@@ -69,9 +69,7 @@ def handle_text_input(user_text, history):
     matched = any(trigger in user_text_lower for trigger in TRIGGERS)
 
     if matched:
-        history = [
-            (user_text.strip(), dialog_tree["start"]["text"])
-        ]
+        history = [(user_text.strip(), dialog_tree["start"]["text"])]
         buttons = dialog_tree["start"]["buttons"]
         return history, "start", *update_buttons(buttons), gr.update(visible=False)
     else:
@@ -109,6 +107,7 @@ with gr.Blocks(title="AI Elektrik Bakım Ustası") as demo:
         b1 = gr.Button("220 Volt", visible=False)
         b2 = gr.Button("380 Volt", visible=False)
         b3 = gr.Button("Kontaktör", visible=False)
+
     reset = gr.Button("🔄 Sıfırla", variant="secondary")
 
     send_btn.click(
