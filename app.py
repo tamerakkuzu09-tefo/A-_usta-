@@ -70,26 +70,19 @@ def handle_text_input(user_text, history):
 
     if matched:
         history = [
-            {"role": "user", "content": user_text.strip()},
-            {"role": "assistant", "content": dialog_tree["start"]["text"]}
+            (user_text.strip(), dialog_tree["start"]["text"])
         ]
         buttons = dialog_tree["start"]["buttons"]
         return history, "start", *update_buttons(buttons), gr.update(visible=False)
     else:
-        history = history + [
-            {"role": "user", "content": user_text.strip()},
-            {"role": "assistant", "content": "⚠️ Lütfen arızayı daha açık belirtin. Örnek: 'Motor çalışmıyor' veya 'Motor start almıyor'"}
-        ]
+        history = history + [(user_text.strip(), "⚠️ Lütfen arızayı daha açık belirtin. Örnek: 'Motor çalışmıyor'")]
         return history, None, *update_buttons([]), gr.update(visible=True)
 
 def choose(choice, history):
     history = history or []
     node = choice
     text = dialog_tree[node]["text"]
-    history = history + [
-        {"role": "user", "content": choice},
-        {"role": "assistant", "content": text}
-    ]
+    history = history + [(choice, text)]
     buttons = dialog_tree[node]["buttons"]
     return history, node, *update_buttons(buttons)
 
