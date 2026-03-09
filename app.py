@@ -1,9 +1,5 @@
 import gradio as gr
 
-# -------------------------
-# Tetikleyici kelimeler
-# -------------------------
-
 TRIGGERS = [
     "motor çalışmıyor",
     "motor arızalı",
@@ -11,10 +7,6 @@ TRIGGERS = [
     "çalışmıyor",
     "motor start almıyor"
 ]
-
-# -------------------------
-# Diyalog ağacı
-# -------------------------
 
 dialog_tree = {
     "start": {
@@ -59,10 +51,6 @@ dialog_tree = {
     }
 }
 
-# -------------------------
-# Buton güncelleme
-# -------------------------
-
 def update_buttons(buttons):
     updates = []
     for i in range(3):
@@ -72,56 +60,48 @@ def update_buttons(buttons):
             updates.append(gr.update(visible=False))
     return updates
 
-# -------------------------
-# Metin girişi kontrolü
-# -------------------------
-
 def handle_text_input(user_text, history):
     if not user_text or not user_text.strip():
         return history, None, *update_buttons([]), gr.update(visible=True)
 
     user_text_lower = user_text.strip().lower()
     history = history or []
-
     matched = any(trigger in user_text_lower for trigger in TRIGGERS)
 
     if matched:
-        history = [(user_text.strip(), dialog_tree["start"]["text"])]
+        history = [
+            {"role": "user", "content": user_text.strip()},
+            {"role": "assistant", "content": dialog_tree["start"]["text"]}
+        ]
         buttons = dialog_tree["start"]["buttons"]
         return history, "start", *update_buttons(buttons), gr.update(visible=False)
     else:
-        history = history + [(user_text.strip(), "⚠️ Lütfen arızayı daha açık belirtin. Örnek: 'Motor çalışmıyor' veya 'Motor start almıyor'")]
+        history = history + [
+            {"role": "user", "content": user_text.strip()},
+            {"role": "assistant", "content": "⚠️ Lütfen arızayı daha açık belirtin. Örnek: 'Motor çalışmıyor' veya 'Motor start almıyor'"}
+        ]
         return history, None, *update_buttons([]), gr.update(visible=True)
-
-# -------------------------
-# Buton seçimi
-# -------------------------
 
 def choose(choice, history):
     history = history or []
     node = choice
     text = dialog_tree[node]["text"]
-    history = history + [(choice, text)]
+    history = history + [
+        {"role": "user", "content": choice},
+        {"role": "assistant", "content": text}
+    ]
     buttons = dialog_tree[node]["buttons"]
     return history, node, *update_buttons(buttons)
 
-# -------------------------
-# Sıfırla
-# -------------------------
-
 def reset_chat():
     return [], None, *update_buttons([]), gr.update(visible=True), ""
-
-# -------------------------
-# Arayüz
-# -------------------------
 
 with gr.Blocks(title="AI Elektrik Bakım Ustası") as demo:
 
     gr.Markdown("# 🔧 AI Elektrik Bakım Ustası")
     gr.Markdown("Arızayı aşağıya yazın, size adım adım yardımcı olalım.")
 
-    chatbot = gr.Chatbot(height=450)
+    chatbot = gr.Chatbot(height=450, type="messages")
     state = gr.State()
 
     with gr.Row() as input_row:
