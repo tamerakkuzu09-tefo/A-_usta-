@@ -101,7 +101,7 @@ with gr.Blocks(title="AI Elektrik Bakım Ustası") as demo:
     gr.Markdown("# 🔧 AI Elektrik Bakım Ustası")
     gr.Markdown("Arızayı aşağıya yazın, size adım adım yardımcı olalım.")
 
-    chatbot = gr.Chatbot(height=450, type="messages")
+    chatbot = gr.Chatbot(height=450)
     state = gr.State()
 
     with gr.Row() as input_row:
