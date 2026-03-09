@@ -160,4 +160,4 @@ with gr.Blocks(title="AI Elektrik Bakım Ustası") as demo:
         outputs=[chatbot, state, b1, b2, b3, input_row, text_input]
     )
 
-demo.launch()
+demo.launch(server_name="0.0.0.0", server_port=7860) 
