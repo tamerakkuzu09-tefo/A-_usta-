@@ -57,7 +57,7 @@ def update_buttons(buttons):
         if i < len(buttons):
             updates.append(gr.update(value=buttons[i], visible=True))
         else:
-            updates.append(gr.update(value=" ", visible=False))
+            updates.append(gr.update(value="-", visible=False))
     return updates
 
 def handle_text_input(user_text, history):
@@ -76,13 +76,41 @@ def handle_text_input(user_text, history):
         history = history + [(user_text.strip(), "⚠️ Lütfen arızayı daha açık belirtin. Örnek: 'Motor çalışmıyor'")]
         return history, None, *update_buttons([]), gr.update(visible=True)
 
-def choose(choice, history):
+def btn1_click(history, state):
+    if state is None:
+        return history, state, *update_buttons([])
+    node_data = dialog_tree.get(state)
+    if not node_data or len(node_data["buttons"]) < 1:
+        return history, state, *update_buttons([])
+    choice = node_data["buttons"][0]
+    return _process_choice(choice, history)
+
+def btn2_click(history, state):
+    if state is None:
+        return history, state, *update_buttons([])
+    node_data = dialog_tree.get(state)
+    if not node_data or len(node_data["buttons"]) < 2:
+        return history, state, *update_buttons([])
+    choice = node_data["buttons"][1]
+    return _process_choice(choice, history)
+
+def btn3_click(history, state):
+    if state is None:
+        return history, state, *update_buttons([])
+    node_data = dialog_tree.get(state)
+    if not node_data or len(node_data["buttons"]) < 3:
+        return history, state, *update_buttons([])
+    choice = node_data["buttons"][2]
+    return _process_choice(choice, history)
+
+def _process_choice(choice, history):
     history = history or []
-    node = choice
-    text = dialog_tree[node]["text"]
-    history = history + [(choice, text)]
-    buttons = dialog_tree[node]["buttons"]
-    return history, node, *update_buttons(buttons)
+    node = dialog_tree.get(choice)
+    if not node:
+        return history, None, *update_buttons([])
+    history = history + [(choice, node["text"])]
+    buttons = node["buttons"]
+    return history, choice, *update_buttons(buttons)
 
 def reset_chat():
     return [], None, *update_buttons([]), gr.update(visible=True), ""
@@ -104,9 +132,9 @@ with gr.Blocks(title="AI Elektrik Bakım Ustası") as demo:
         send_btn = gr.Button("Gönder", scale=1, variant="primary")
 
     with gr.Row():
-        b1 = gr.Button("220 Volt", visible=False)
-        b2 = gr.Button("380 Volt", visible=False)
-        b3 = gr.Button("Kontaktör", visible=False)
+        b1 = gr.Button("...", visible=False)
+        b2 = gr.Button("...", visible=False)
+        b3 = gr.Button("...", visible=False)
 
     reset = gr.Button("🔄 Sıfırla", variant="secondary")
 
@@ -122,9 +150,9 @@ with gr.Blocks(title="AI Elektrik Bakım Ustası") as demo:
         outputs=[chatbot, state, b1, b2, b3, input_row]
     )
 
-    b1.click(choose, inputs=[b1, chatbot], outputs=[chatbot, state, b1, b2, b3])
-    b2.click(choose, inputs=[b2, chatbot], outputs=[chatbot, state, b1, b2, b3])
-    b3.click(choose, inputs=[b3, chatbot], outputs=[chatbot, state, b1, b2, b3])
+    b1.click(btn1_click, inputs=[chatbot, state], outputs=[chatbot, state, b1, b2, b3])
+    b2.click(btn2_click, inputs=[chatbot, state], outputs=[chatbot, state, b1, b2, b3])
+    b3.click(btn3_click, inputs=[chatbot, state], outputs=[chatbot, state, b1, b2, b3])
 
     reset.click(
         reset_chat,
