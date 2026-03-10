@@ -15,29 +15,29 @@ dialog_tree = {
     },
     "380 Volt": {
         "text": "Bu motor neyle çalışıyor?",
-        "buttons": ["Kontaktör", "Sürücü", "Softstarter"]
+        "buttons": ["Kontaktor", "Surucu", "Softstarter"]
     },
     "220 Volt": {
         "text": "220 volt motorlarda kondansatör arızası sık görülür.",
         "buttons": ["", "", ""]
     },
-    "Kontaktör": {
+    "Kontaktor": {
         "text": "Termik atmış mı?",
-        "buttons": ["Evet", "Hayır", ""]
+        "buttons": ["Evet", "Hayir", ""]
     },
-    "Sürücü": {
+    "Surucu": {
         "text": "Sürücü ekranında hata var mı?",
         "buttons": ["Var", "Yok", ""]
     },
     "Softstarter": {
         "text": "Softstarter hata ışığı yanıyor mu?",
-        "buttons": ["Evet", "Hayır", ""]
+        "buttons": ["Evet", "Hayir", ""]
     },
     "Evet": {
         "text": "Termiği resetleyip tekrar deneyin.",
         "buttons": ["", "", ""]
     },
-    "Hayır": {
+    "Hayir": {
         "text": "Motor klemensinde 3 faz var mı?",
         "buttons": ["Var", "Yok", ""]
     },
@@ -51,11 +51,26 @@ dialog_tree = {
     }
 }
 
+# Görüntü etiketleri - Gradio çevirmesin diye İngilizce olmayan ama kısa kodlar
+display_labels = {
+    "220 Volt": "220 Volt",
+    "380 Volt": "380 Volt",
+    "Kontaktor": "Kontaktör",
+    "Surucu": "Sürücü",
+    "Softstarter": "Softstarter",
+    "Evet": "Evet",
+    "Hayir": "Hayır",
+    "Var": "Var",
+    "Yok": "Yok"
+}
+
 def get_active_buttons(node_key):
     if node_key is None:
         return []
     btns = dialog_tree.get(node_key, {}).get("buttons", [])
-    return [b for b in btns if b]
+    active = [b for b in btns if b]
+    # choices: (display_label, value) tuple listesi
+    return [(display_labels.get(b, b), b) for b in active]
 
 def add_msg(history, user_text, bot_text):
     history = history or []
@@ -65,35 +80,36 @@ def add_msg(history, user_text, bot_text):
 
 def handle_text_input(user_text, history):
     if not user_text or not user_text.strip():
-        return history, None, gr.update(choices=[], visible=False), gr.update(visible=True), gr.update(value=None)
+        return history, None, gr.update(choices=[], visible=False, value=None), gr.update(visible=True)
     user_text_lower = user_text.strip().lower()
     matched = any(trigger in user_text_lower for trigger in TRIGGERS)
     if matched:
         history = add_msg([], user_text.strip(), dialog_tree["start"]["text"])
         choices = get_active_buttons("start")
-        return history, "start", gr.update(choices=choices, visible=True, value=None), gr.update(visible=False), gr.update(value=None)
+        return history, "start", gr.update(choices=choices, visible=True, value=None), gr.update(visible=False)
     else:
         history = add_msg(history or [], user_text.strip(), "⚠️ Lütfen arızayı daha açık belirtin. Örnek: 'Motor çalışmıyor'")
-        return history, None, gr.update(choices=[], visible=False), gr.update(visible=True), gr.update(value=None)
+        return history, None, gr.update(choices=[], visible=False, value=None), gr.update(visible=True)
 
 def handle_choice(choice, history, state):
     if not choice or state is None:
-        return history, state, gr.update(visible=False), gr.update(value=None)
+        return history, state, gr.update(visible=False, value=None)
     node_data = dialog_tree.get(state)
     if not node_data or choice not in node_data["buttons"]:
-        return history, state, gr.update(visible=False), gr.update(value=None)
+        return history, state, gr.update(visible=False, value=None)
     next_node = dialog_tree.get(choice)
     if not next_node:
-        return history, state, gr.update(visible=False), gr.update(value=None)
-    history = add_msg(history or [], choice, next_node["text"])
+        return history, state, gr.update(visible=False, value=None)
+    display = display_labels.get(choice, choice)
+    history = add_msg(history or [], display, next_node["text"])
     choices = get_active_buttons(choice)
     if choices:
-        return history, choice, gr.update(choices=choices, visible=True, value=None), gr.update(value=None)
+        return history, choice, gr.update(choices=choices, visible=True, value=None)
     else:
-        return history, choice, gr.update(choices=[], visible=False), gr.update(value=None)
+        return history, choice, gr.update(choices=[], visible=False, value=None)
 
 def reset_chat():
-    return [], None, gr.update(choices=[], visible=False), gr.update(visible=True), "", gr.update(value=None)
+    return [], None, gr.update(choices=[], visible=False, value=None), gr.update(visible=True), ""
 
 with gr.Blocks(title="AI Elektrik Bakım Ustası") as demo:
     gr.Markdown("# 🔧 AI Elektrik Bakım Ustası")
@@ -105,7 +121,8 @@ with gr.Blocks(title="AI Elektrik Bakım Ustası") as demo:
     choice_radio = gr.Radio(
         choices=[],
         label="Seçiminizi yapın:",
-        visible=False
+        visible=False,
+        value=None
     )
 
     with gr.Row() as input_row:
@@ -120,17 +137,17 @@ with gr.Blocks(title="AI Elektrik Bakım Ustası") as demo:
 
     send_btn.click(handle_text_input,
         inputs=[text_input, chatbot],
-        outputs=[chatbot, state, choice_radio, input_row, choice_radio])
+        outputs=[chatbot, state, choice_radio, input_row])
 
     text_input.submit(handle_text_input,
         inputs=[text_input, chatbot],
-        outputs=[chatbot, state, choice_radio, input_row, choice_radio])
+        outputs=[chatbot, state, choice_radio, input_row])
 
     choice_radio.select(handle_choice,
         inputs=[choice_radio, chatbot, state],
-        outputs=[chatbot, state, choice_radio, choice_radio])
+        outputs=[chatbot, state, choice_radio])
 
     reset.click(reset_chat,
-        outputs=[chatbot, state, choice_radio, input_row, text_input, choice_radio])
+        outputs=[chatbot, state, choice_radio, input_row, text_input])
 
 demo.launch(server_name="0.0.0.0", server_port=7860, share=False)
