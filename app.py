@@ -51,22 +51,11 @@ dialog_tree = {
     }
 }
 
-def make_button_html(node_key):
+def get_active_buttons(node_key):
     if node_key is None:
-        return gr.update(value="", visible=False)
-    btns = dialog_tree[node_key]["buttons"]
-    active = [b for b in btns if b]
-    if not active:
-        return gr.update(value="", visible=False)
-    
-    html = '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:8px;">'
-    for btn in active:
-        html += f'''<button onclick="
-            document.getElementById('hidden_input').value='{btn}';
-            document.getElementById('hidden_btn').click();
-        " style="padding:10px 20px;font-size:16px;border:2px solid #666;border-radius:8px;background:#f0f0f0;cursor:pointer;">{btn}</button>'''
-    html += '</div>'
-    return gr.update(value=html, visible=True)
+        return []
+    btns = dialog_tree.get(node_key, {}).get("buttons", [])
+    return [b for b in btns if b]
 
 def add_msg(history, user_text, bot_text):
     history = history or []
@@ -76,33 +65,35 @@ def add_msg(history, user_text, bot_text):
 
 def handle_text_input(user_text, history):
     if not user_text or not user_text.strip():
-        return history, None, make_button_html(None), gr.update(visible=True)
+        return history, None, gr.update(choices=[], visible=False), gr.update(visible=True), gr.update(value=None)
     user_text_lower = user_text.strip().lower()
     matched = any(trigger in user_text_lower for trigger in TRIGGERS)
     if matched:
         history = add_msg([], user_text.strip(), dialog_tree["start"]["text"])
-        return history, "start", make_button_html("start"), gr.update(visible=False)
+        choices = get_active_buttons("start")
+        return history, "start", gr.update(choices=choices, visible=True, value=None), gr.update(visible=False), gr.update(value=None)
     else:
         history = add_msg(history or [], user_text.strip(), "⚠️ Lütfen arızayı daha açık belirtin. Örnek: 'Motor çalışmıyor'")
-        return history, None, make_button_html(None), gr.update(visible=True)
+        return history, None, gr.update(choices=[], visible=False), gr.update(visible=True), gr.update(value=None)
 
-def handle_choice(choice_text, history, state):
-    if not choice_text or not choice_text.strip():
-        return history, state, make_button_html(state), ""
-    choice = choice_text.strip()
-    if state is None:
-        return history, state, make_button_html(None), ""
+def handle_choice(choice, history, state):
+    if not choice or state is None:
+        return history, state, gr.update(visible=False), gr.update(value=None)
     node_data = dialog_tree.get(state)
     if not node_data or choice not in node_data["buttons"]:
-        return history, state, make_button_html(state), ""
+        return history, state, gr.update(visible=False), gr.update(value=None)
     next_node = dialog_tree.get(choice)
     if not next_node:
-        return history, state, make_button_html(None), ""
+        return history, state, gr.update(visible=False), gr.update(value=None)
     history = add_msg(history or [], choice, next_node["text"])
-    return history, choice, make_button_html(choice), ""
+    choices = get_active_buttons(choice)
+    if choices:
+        return history, choice, gr.update(choices=choices, visible=True, value=None), gr.update(value=None)
+    else:
+        return history, choice, gr.update(choices=[], visible=False), gr.update(value=None)
 
 def reset_chat():
-    return [], None, make_button_html(None), gr.update(visible=True), ""
+    return [], None, gr.update(choices=[], visible=False), gr.update(visible=True), "", gr.update(value=None)
 
 with gr.Blocks(title="AI Elektrik Bakım Ustası") as demo:
     gr.Markdown("# 🔧 AI Elektrik Bakım Ustası")
@@ -111,12 +102,11 @@ with gr.Blocks(title="AI Elektrik Bakım Ustası") as demo:
     chatbot = gr.Chatbot(height=450, type="messages")
     state = gr.State()
 
-    btn_area = gr.HTML(value="", visible=False)
-
-    # Gizli input ve buton - HTML butonlarından tetiklenir
-    with gr.Row(visible=False):
-        hidden_input = gr.Textbox(elem_id="hidden_input")
-        hidden_btn = gr.Button("hidden", elem_id="hidden_btn")
+    choice_radio = gr.Radio(
+        choices=[],
+        label="Seçiminizi yapın:",
+        visible=False
+    )
 
     with gr.Row() as input_row:
         text_input = gr.Textbox(
@@ -130,17 +120,17 @@ with gr.Blocks(title="AI Elektrik Bakım Ustası") as demo:
 
     send_btn.click(handle_text_input,
         inputs=[text_input, chatbot],
-        outputs=[chatbot, state, btn_area, input_row])
+        outputs=[chatbot, state, choice_radio, input_row, choice_radio])
 
     text_input.submit(handle_text_input,
         inputs=[text_input, chatbot],
-        outputs=[chatbot, state, btn_area, input_row])
+        outputs=[chatbot, state, choice_radio, input_row, choice_radio])
 
-    hidden_btn.click(handle_choice,
-        inputs=[hidden_input, chatbot, state],
-        outputs=[chatbot, state, btn_area, hidden_input])
+    choice_radio.select(handle_choice,
+        inputs=[choice_radio, chatbot, state],
+        outputs=[chatbot, state, choice_radio, choice_radio])
 
     reset.click(reset_chat,
-        outputs=[chatbot, state, btn_area, input_row, text_input])
+        outputs=[chatbot, state, choice_radio, input_row, text_input, choice_radio])
 
 demo.launch(server_name="0.0.0.0", server_port=7860, share=False)
