@@ -11,7 +11,7 @@ TRIGGERS = [
 dialog_tree = {
     "start": {
         "text": "Bu motor kaç voltta çalışıyor?",
-        "buttons": ["220 Volt", "380 Volt"]
+        "buttons": ["220 Volt", "380 Volt", ""]
     },
     "380 Volt": {
         "text": "Bu motor neyle çalışıyor?",
@@ -19,50 +19,48 @@ dialog_tree = {
     },
     "220 Volt": {
         "text": "220 volt motorlarda kondansatör arızası sık görülür.",
-        "buttons": []
+        "buttons": ["", "", ""]
     },
     "Kontaktör": {
         "text": "Termik atmış mı?",
-        "buttons": ["Evet", "Hayır"]
+        "buttons": ["Evet", "Hayır", ""]
     },
     "Sürücü": {
         "text": "Sürücü ekranında hata var mı?",
-        "buttons": ["Var", "Yok"]
+        "buttons": ["Var", "Yok", ""]
     },
     "Softstarter": {
         "text": "Softstarter hata ışığı yanıyor mu?",
-        "buttons": ["Evet", "Hayır"]
+        "buttons": ["Evet", "Hayır", ""]
     },
     "Evet": {
         "text": "Termiği resetleyip tekrar deneyin.",
-        "buttons": []
+        "buttons": ["", "", ""]
     },
     "Hayır": {
         "text": "Motor klemensinde 3 faz var mı?",
-        "buttons": ["Var", "Yok"]
+        "buttons": ["Var", "Yok", ""]
     },
     "Var": {
         "text": "Motor sıkışmış olabilir.",
-        "buttons": []
+        "buttons": ["", "", ""]
     },
     "Yok": {
         "text": "Sigorta veya kabloyu kontrol edin.",
-        "buttons": []
+        "buttons": ["", "", ""]
     }
 }
 
-def update_buttons(buttons):
-    updates = []
-    for i in range(3):
-        if i < len(buttons):
-            updates.append(gr.update(value=buttons[i], visible=True))
-        else:
-            updates.append(gr.update(value="-", visible=False))
-    return updates
+def make_buttons(node_key):
+    btns = dialog_tree[node_key]["buttons"]
+    b1 = gr.update(value=btns[0], visible=bool(btns[0]))
+    b2 = gr.update(value=btns[1], visible=bool(btns[1]))
+    b3 = gr.update(value=btns[2], visible=bool(btns[2]))
+    return b1, b2, b3
 
 def handle_text_input(user_text, history):
     if not user_text or not user_text.strip():
-        return history, None, *update_buttons([]), gr.update(visible=True)
+        return history, None, gr.update(visible=False), gr.update(visible=False), gr.update(visible=False), gr.update(visible=True)
 
     user_text_lower = user_text.strip().lower()
     history = history or []
@@ -70,50 +68,34 @@ def handle_text_input(user_text, history):
 
     if matched:
         history = [(user_text.strip(), dialog_tree["start"]["text"])]
-        buttons = dialog_tree["start"]["buttons"]
-        return history, "start", *update_buttons(buttons), gr.update(visible=False)
+        b1, b2, b3 = make_buttons("start")
+        return history, "start", b1, b2, b3, gr.update(visible=False)
     else:
         history = history + [(user_text.strip(), "⚠️ Lütfen arızayı daha açık belirtin. Örnek: 'Motor çalışmıyor'")]
-        return history, None, *update_buttons([]), gr.update(visible=True)
+        return history, None, gr.update(visible=False), gr.update(visible=False), gr.update(visible=False), gr.update(visible=True)
 
-def btn1_click(history, state):
+def btn_click(btn_index, history, state):
     if state is None:
-        return history, state, *update_buttons([])
+        return history, state, gr.update(visible=False), gr.update(visible=False), gr.update(visible=False)
     node_data = dialog_tree.get(state)
-    if not node_data or len(node_data["buttons"]) < 1:
-        return history, state, *update_buttons([])
-    choice = node_data["buttons"][0]
-    return _process_choice(choice, history)
-
-def btn2_click(history, state):
-    if state is None:
-        return history, state, *update_buttons([])
-    node_data = dialog_tree.get(state)
-    if not node_data or len(node_data["buttons"]) < 2:
-        return history, state, *update_buttons([])
-    choice = node_data["buttons"][1]
-    return _process_choice(choice, history)
-
-def btn3_click(history, state):
-    if state is None:
-        return history, state, *update_buttons([])
-    node_data = dialog_tree.get(state)
-    if not node_data or len(node_data["buttons"]) < 3:
-        return history, state, *update_buttons([])
-    choice = node_data["buttons"][2]
-    return _process_choice(choice, history)
-
-def _process_choice(choice, history):
-    history = history or []
-    node = dialog_tree.get(choice)
-    if not node:
-        return history, None, *update_buttons([])
-    history = history + [(choice, node["text"])]
-    buttons = node["buttons"]
-    return history, choice, *update_buttons(buttons)
+    if not node_data:
+        return history, state, gr.update(visible=False), gr.update(visible=False), gr.update(visible=False)
+    
+    buttons = node_data["buttons"]
+    if btn_index >= len(buttons) or not buttons[btn_index]:
+        return history, state, gr.update(visible=False), gr.update(visible=False), gr.update(visible=False)
+    
+    choice = buttons[btn_index]
+    next_node = dialog_tree.get(choice)
+    if not next_node:
+        return history, state, gr.update(visible=False), gr.update(visible=False), gr.update(visible=False)
+    
+    history = (history or []) + [(choice, next_node["text"])]
+    b1, b2, b3 = make_buttons(choice)
+    return history, choice, b1, b2, b3
 
 def reset_chat():
-    return [], None, *update_buttons([]), gr.update(visible=True), ""
+    return [], None, gr.update(visible=False), gr.update(visible=False), gr.update(visible=False), gr.update(visible=True), ""
 
 with gr.Blocks(title="AI Elektrik Bakım Ustası") as demo:
 
@@ -150,9 +132,9 @@ with gr.Blocks(title="AI Elektrik Bakım Ustası") as demo:
         outputs=[chatbot, state, b1, b2, b3, input_row]
     )
 
-    b1.click(btn1_click, inputs=[chatbot, state], outputs=[chatbot, state, b1, b2, b3])
-    b2.click(btn2_click, inputs=[chatbot, state], outputs=[chatbot, state, b1, b2, b3])
-    b3.click(btn3_click, inputs=[chatbot, state], outputs=[chatbot, state, b1, b2, b3])
+    b1.click(lambda h, s: btn_click(0, h, s), inputs=[chatbot, state], outputs=[chatbot, state, b1, b2, b3])
+    b2.click(lambda h, s: btn_click(1, h, s), inputs=[chatbot, state], outputs=[chatbot, state, b1, b2, b3])
+    b3.click(lambda h, s: btn_click(2, h, s), inputs=[chatbot, state], outputs=[chatbot, state, b1, b2, b3])
 
     reset.click(
         reset_chat,
