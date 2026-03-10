@@ -51,15 +51,22 @@ dialog_tree = {
     }
 }
 
-def make_buttons(node_key):
+def make_button_html(node_key):
+    if node_key is None:
+        return gr.update(value="", visible=False)
     btns = dialog_tree[node_key]["buttons"]
-    b1 = gr.update(value=btns[0], visible=bool(btns[0]))
-    b2 = gr.update(value=btns[1], visible=bool(btns[1]))
-    b3 = gr.update(value=btns[2], visible=bool(btns[2]))
-    return b1, b2, b3
-
-def hide_buttons():
-    return gr.update(visible=False), gr.update(visible=False), gr.update(visible=False)
+    active = [b for b in btns if b]
+    if not active:
+        return gr.update(value="", visible=False)
+    
+    html = '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:8px;">'
+    for btn in active:
+        html += f'''<button onclick="
+            document.getElementById('hidden_input').value='{btn}';
+            document.getElementById('hidden_btn').click();
+        " style="padding:10px 20px;font-size:16px;border:2px solid #666;border-radius:8px;background:#f0f0f0;cursor:pointer;">{btn}</button>'''
+    html += '</div>'
+    return gr.update(value=html, visible=True)
 
 def add_msg(history, user_text, bot_text):
     history = history or []
@@ -69,49 +76,47 @@ def add_msg(history, user_text, bot_text):
 
 def handle_text_input(user_text, history):
     if not user_text or not user_text.strip():
-        return history, None, *hide_buttons(), gr.update(visible=True)
-
+        return history, None, make_button_html(None), gr.update(visible=True)
     user_text_lower = user_text.strip().lower()
     matched = any(trigger in user_text_lower for trigger in TRIGGERS)
-
     if matched:
         history = add_msg([], user_text.strip(), dialog_tree["start"]["text"])
-        b1, b2, b3 = make_buttons("start")
-        return history, "start", b1, b2, b3, gr.update(visible=False)
+        return history, "start", make_button_html("start"), gr.update(visible=False)
     else:
         history = add_msg(history or [], user_text.strip(), "⚠️ Lütfen arızayı daha açık belirtin. Örnek: 'Motor çalışmıyor'")
-        return history, None, *hide_buttons(), gr.update(visible=True)
+        return history, None, make_button_html(None), gr.update(visible=True)
 
-def btn_click(btn_index, history, state):
+def handle_choice(choice_text, history, state):
+    if not choice_text or not choice_text.strip():
+        return history, state, make_button_html(state), ""
+    choice = choice_text.strip()
     if state is None:
-        return history, state, *hide_buttons()
+        return history, state, make_button_html(None), ""
     node_data = dialog_tree.get(state)
-    if not node_data:
-        return history, state, *hide_buttons()
-
-    buttons = node_data["buttons"]
-    if btn_index >= len(buttons) or not buttons[btn_index]:
-        return history, state, *hide_buttons()
-
-    choice = buttons[btn_index]
+    if not node_data or choice not in node_data["buttons"]:
+        return history, state, make_button_html(state), ""
     next_node = dialog_tree.get(choice)
     if not next_node:
-        return history, state, *hide_buttons()
-
+        return history, state, make_button_html(None), ""
     history = add_msg(history or [], choice, next_node["text"])
-    b1, b2, b3 = make_buttons(choice)
-    return history, choice, b1, b2, b3
+    return history, choice, make_button_html(choice), ""
 
 def reset_chat():
-    return [], None, *hide_buttons(), gr.update(visible=True), ""
+    return [], None, make_button_html(None), gr.update(visible=True), ""
 
 with gr.Blocks(title="AI Elektrik Bakım Ustası") as demo:
-
     gr.Markdown("# 🔧 AI Elektrik Bakım Ustası")
     gr.Markdown("Arızayı aşağıya yazın, size adım adım yardımcı olalım.")
 
     chatbot = gr.Chatbot(height=450, type="messages")
     state = gr.State()
+
+    btn_area = gr.HTML(value="", visible=False)
+
+    # Gizli input ve buton - HTML butonlarından tetiklenir
+    with gr.Row(visible=False):
+        hidden_input = gr.Textbox(elem_id="hidden_input")
+        hidden_btn = gr.Button("hidden", elem_id="hidden_btn")
 
     with gr.Row() as input_row:
         text_input = gr.Textbox(
@@ -121,20 +126,21 @@ with gr.Blocks(title="AI Elektrik Bakım Ustası") as demo:
         )
         send_btn = gr.Button("Gönder", scale=1, variant="primary")
 
-    with gr.Row():
-        b1 = gr.Button("...", visible=False)
-        b2 = gr.Button("...", visible=False)
-        b3 = gr.Button("...", visible=False)
-
     reset = gr.Button("🔄 Sıfırla", variant="secondary")
 
-    send_btn.click(handle_text_input, inputs=[text_input, chatbot], outputs=[chatbot, state, b1, b2, b3, input_row])
-    text_input.submit(handle_text_input, inputs=[text_input, chatbot], outputs=[chatbot, state, b1, b2, b3, input_row])
+    send_btn.click(handle_text_input,
+        inputs=[text_input, chatbot],
+        outputs=[chatbot, state, btn_area, input_row])
 
-    b1.click(lambda h, s: btn_click(0, h, s), inputs=[chatbot, state], outputs=[chatbot, state, b1, b2, b3])
-    b2.click(lambda h, s: btn_click(1, h, s), inputs=[chatbot, state], outputs=[chatbot, state, b1, b2, b3])
-    b3.click(lambda h, s: btn_click(2, h, s), inputs=[chatbot, state], outputs=[chatbot, state, b1, b2, b3])
+    text_input.submit(handle_text_input,
+        inputs=[text_input, chatbot],
+        outputs=[chatbot, state, btn_area, input_row])
 
-    reset.click(reset_chat, outputs=[chatbot, state, b1, b2, b3, input_row, text_input])
+    hidden_btn.click(handle_choice,
+        inputs=[hidden_input, chatbot, state],
+        outputs=[chatbot, state, btn_area, hidden_input])
+
+    reset.click(reset_chat,
+        outputs=[chatbot, state, btn_area, input_row, text_input])
 
 demo.launch(server_name="0.0.0.0", server_port=7860, share=False)
