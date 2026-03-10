@@ -1,7 +1,7 @@
 from http.server import HTTPServer, BaseHTTPRequestHandler
 import os
 
-PORT = int(os.environ.get("PORT", 8080))
+PORT = int(os.environ.get("PORT", 7860))
 
 HTML = """<!DOCTYPE html>
 <html lang="tr">
@@ -15,7 +15,7 @@ HTML = """<!DOCTYPE html>
   header { background: #1a1a2e; color: white; padding: 16px 20px; text-align: center; }
   header h1 { font-size: 20px; }
   header p { font-size: 13px; color: #aaa; margin-top: 4px; }
-  #chat { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 12px; max-height: calc(100vh - 180px); }
+  #chat { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; justify-content: flex-end; gap: 12px; max-height: calc(100vh - 180px); }
   .msg { max-width: 80%; padding: 12px 16px; border-radius: 16px; font-size: 15px; line-height: 1.5; word-wrap: break-word; }
   .bot { background: white; color: #222; border-bottom-left-radius: 4px; align-self: flex-start; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
   .user { background: #0084ff; color: white; border-bottom-right-radius: 4px; align-self: flex-end; }
