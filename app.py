@@ -94,7 +94,49 @@ const TREE = {
     buttons: []
   },
   "Hemen atıyor": {
-    text: "Motor veya besleme hattında kısa devre olabilir. Motoru devreden çıkarıp direncini ölçün.",
+    text: "Bu durumda olası bir kısa devre ihtimali var. Bu kısa devre motor tarafında mı pano tarafında mı onu anlayalım. Şimdi şunu yap: Motor kablosunun panoya girip bağlandığı noktadan (klemens ya da direkt kontaktör veya termiğe bağlanmış olabilir) kabloları sıralamasına dikkat ederek sök, yani motor kablosunu panodan ayır. Termiği tekrar resetle ve start butonuna bas. Tekrar gözlemle, termik atıyor mu? Atıyorsa start butonuna basar basmaz mı atıyor yoksa yine bir süre sonra mı atıyor?",
+    buttons: ["Atmıyor2", "Bir süre sonra atıyor2", "Hemen atıyor2"]
+  },
+  "Atmıyor2": {
+    text: "Şimdi önce panoda voltaj ölçümleri yapalım. Termik resetli ve start butonuna basılmış, motoru çalıştıran kontaktör çekili iken motor kablolarını çıkardığın yerden voltaj ölçümü yap. Fazlar arasında yaklaşık 375 ile 405 volt arası bir değer ölçmen lazım. Çıkan sonuç verdiğim değerler arasında ise stop butonuna bas, termiği kapat ve motor kablolarını çıkardığın yere çıkardığın sıralama ile bağla.",
+    buttons: ["Voltaj değerleri normal", "Voltaj değerleri normal değil"]
+  },
+  "Bir süre sonra atıyor2": {
+    text: "Kablo veya bağlantı noktalarında kaçak akım olabilir. Kabloları ve bağlantı noktalarını dikkatlice kontrol edin.",
+    buttons: []
+  },
+  "Hemen atıyor2": {
+    text: "Pano tarafında kısa devre var. Kontaktör, termik ve bağlantı noktalarını kontrol edin.",
+    buttons: []
+  },
+  "Voltaj değerleri normal": {
+    text: "Kabloları çıkardığın yere bağlarken sıralamaya dikkat ettiğini varsayıyorum. Şimdi motorun yanına git ve motora bak, anormal bir durum var mı? Yakından kokla, eğer yanıksa yanık kokusunu hissedebilirsin. Sonra yapabiliyorsan motor el ile dönüyor mu kontrol et.",
+    buttons: ["Motor elle dönüyor", "Motor elle dönmüyor"]
+  },
+  "Voltaj değerleri normal değil": {
+    text: "Pano besleme hattında sorun var. Sigortaları, kablo bağlantılarını ve şebeke gelişini kontrol edin.",
+    buttons: []
+  },
+  "Motor elle dönüyor": {
+    text: "Şimdi klemens kapağını aç ve yine kablo sıralamasına dikkat ederek kabloları çıkarıp motordan ayır.
+
+Burası çok önemli, şimdi söyleyeceğim şeyleri yaparken çok dikkatli olmalısın. Kabloları motordan ayırdıktan sonra kablo boşta ve herhangi bir ucunun sana, herhangi bir yere veya birbirine temas etmediğinden emin ol. Termiği resetle ve start butonuna bas, sonra motorun yanında motordan çıkardığın kabloları çok dikkatli bir şekilde ölç. Yine fazlar arasında 375 ile 405 volt arasında değerler görmen lazım.",
+    buttons: ["Voltaj değerleri normal2", "Voltaj değerleri normal değil2"]
+  },
+  "Motor elle dönmüyor": {
+    text: "Motor mekanik olarak kilitlenmiş olabilir. Motor yataklarını veya bağlı olduğu yükü kontrol edin. Motor içi arıza da olabilir, servis gerekebilir.",
+    buttons: []
+  },
+  "Voltaj değerleri normal2": {
+    text: "Şimdi öncelikle ölçü aleti ile motorun sağlamlık kontrolünü yap. Ölçü aletini buzzer konumuna al. Önce motor klemensindeki üç ya da altı uç ile gövde arasında ölçüm yap, sonra da fazlar arasında yap ölçümü.
+
+Yanık bir motorda genellikle uçlardan bir veya birkaçında gövde ile kısa devre olur ya da fazlar arasında bir faz değer göstermez veya fazlardan bir tanesi diğer ikisine göre çok farklı bir değer gösterir; bu motorun yanık olduğu anlamına gelir. Etiket bilgisine dikkat ederek motoru değiştir.
+
+Sağlam bir motorda fazlar arasındaki direnç değerleri birbirine yakın ve uçlar ile gövde arasında herhangi bir kısa devre olmaz.",
+    buttons: []
+  },
+  "Voltaj değerleri normal değil2": {
+    text: "Kablo hattında sorun var. Motordan panoya giden kabloyu kontrol edin, kopukluk veya kaçak olabilir.",
     buttons: []
   },
   "Hayır": {
