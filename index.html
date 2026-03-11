@@ -62,9 +62,9 @@ var TREE = {
   'Yük ayrıldı motor dönmüyor': { text: 'Motor elle dönmüyorsa motorda mekaniksel bir sıkışma vardır. Muhtemelen rulman kilitlemiştir. Varsa motoru yedeği ile değiştir ya da bakım yap.', buttons: [] },
   'Voltaj normal2': { text: 'Simdi once olcu aleti ile motorun saglamlik kontrolunu yap. Olcu aletini buzzer konumuna al. Once motor klemensindeki uc ya da alti uc ile govde arasinda olcum yap, sonra da fazlar arasinda yap. Yanik bir motorda genellikle uclardan bir veya birkacinda govde ile kisa devre olur ya da fazlar arasinda bir faz deger gostermez veya fazlardan bir tanesi digerlerine gore cok farkli bir deger gosterir; bu motorun yanik oldugu anlamina gelir, etiket bilgisine dikkat ederek motoru degistir. Saglam bir motorda fazlar arasindaki direnc degerleri birbirine yakin ve uclar ile govde arasinda herhangi bir kisa devre olmaz.', buttons: [] },
   'Voltaj normal degil2': { text: 'Kablo hattinda sorun var. Motordan panoya giden kabloyu kontrol edin, kopukluk veya kacak olabilir.', buttons: [] },
-  'Hayir': { text: 'Motor klemensinde 3 faz var mi?', buttons: ['Var', 'Yok'] },
-  'Var': { text: 'Motor sikismis olabilir. Yuku kontrol edin.', buttons: [] },
-  'Yok': { text: 'Sigorta veya kabloyu kontrol edin.', buttons: [] }
+  'Hayir': { text: 'Motoru çalıştıran kontaktör çekiyor mu?', buttons: ['Evet çekiyor', 'Hayır çekmiyor'] },
+  'Hayır çekmiyor': { text: 'Motoru çalıştıran kontaktörün bobin uçlarına (A1 ve A2) enerji geliyor mu kontrol et. Ama burada kontaktörün çalışma voltajını bilmen gerekiyor. Genelde kontaktör üzerinde yazar. (220 volt AC, 110 volt AC, 42 volt AC, 24 volt AC ya da DC, 12 volt AC ya da DC) Eğer yazmıyorsa mantıklı olan ölçü aletini AC moduna alıp ilk ölçümü bu şekilde yapmak. Eğer herhangi bir değer görmezsen o zaman DC moda alıp ölçümü öyle yap. Eğer bobin uçlarına enerji gelmiyorsa sistemde kontaktörü enerjileyen devre elemanını kontrol et. (Start butonu, sensör, siviç, PLC vs.)', buttons: [] },
+  'Evet çekiyor': { text: 'Kontaktörün giriş ve çıkış uçlarındaki üç faz voltaj değerlerini ölç. 370 volt ile 410 volt arasında olmalı. Eğer kontaktörün giriş tarafındaki üç faz normal ama çıkış tarafında üç faz voltajlarında eksiklik varsa ya da voltaj hiç yoksa kontaktör arızalı demektir. (Bu arada faz eksikliği varsa motor iki faza kalıp termik attırır.) Eğer kontaktörün giriş tarafında voltaj yoksa kontaktöre enerji gelmiyor demektir.', buttons: [] }
 };
 
 var state = null;
