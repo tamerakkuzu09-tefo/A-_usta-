@@ -74,7 +74,27 @@ const TREE = {
     buttons: ["Evet", "Hayır"]
   },
   "Evet": {
-    text: "Termiği resetleyip tekrar deneyin.",
+    text: "Öncelikle kesinlikle güvenlik kurallarına uy, dikkatli ve tedbirli ol. Panoda motorun bağlı olduğu kontaktör ve termik devresini gözle kontrol et. Yanık herhangi bir parça veya kablo var mı, yanık kokusu geliyor mu? Eğer böyle bir durum varsa gerekli değişimleri ve düzeltmeleri yap.",
+    buttons: ["Yanık var", "Yanık yok"]
+  },
+  "Yanık var": {
+    text: "Yanık olan parça veya kabloyu değiştirin. Değişimden sonra tekrar deneyin.",
+    buttons: []
+  },
+  "Yanık yok": {
+    text: "Termiği resetle ve start butonuna bas, bak bakalım termik tekrar atıyor mu?",
+    buttons: ["Atmıyor", "Bir süre sonra atıyor", "Hemen atıyor"]
+  },
+  "Atmıyor": {
+    text: "Motor çalışmaya başladı. Sorununuz çözülmüş görünüyor. Takipte kalın.",
+    buttons: []
+  },
+  "Bir süre sonra atıyor": {
+    text: "Motor ısınma sorunu yaşıyor olabilir. Motorun üzerindeki fanı ve havalandırma deliklerini kontrol edin. Aşırı yük var mı kontrol edin.",
+    buttons: []
+  },
+  "Hemen atıyor": {
+    text: "Motor veya besleme hattında kısa devre olabilir. Motoru devreden çıkarıp direncini ölçün.",
     buttons: []
   },
   "Hayır": {
