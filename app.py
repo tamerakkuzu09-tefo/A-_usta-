@@ -44,8 +44,8 @@ HTML = """<!DOCTYPE html>
 
 <script>
 const TRIGGERS = [
-  "motor çalışmıyor", "motor arızalı", "calismiyor",
-  "çalışmıyor", "motor start almıyor"
+  "motor", "arıza", "calismiyor", "çalışmıyor",
+  "start almıyor", "calısmiyor", "problem", "sorun"
 ];
 
 const TREE = {
