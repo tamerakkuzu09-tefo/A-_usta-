@@ -44,132 +44,132 @@ HTML = """<!DOCTYPE html>
 
 <script>
 const TRIGGERS = [
-  "motor", "arıza", "calismiyor", "çalışmıyor",
-  "start almıyor", "calısmiyor", "problem", "sorun"
+  'motor', 'arıza', 'calismiyor', 'çalışmıyor',
+  'start almıyor', 'calısmiyor', 'problem', 'sorun'
 ];
 
 const TREE = {
-  "start": {
-    text: "Bu motor kaç voltta çalışıyor?",
-    buttons: ["220 Volt", "380 Volt"]
+  'start': {
+    text: 'Bu motor kaç voltta çalışıyor?',
+    buttons: ['220 Volt', '380 Volt']
   },
-  "220 Volt": {
-    text: "220V motorlarda kondansatör arızası sık görülür. Kondansatörü kontrol edin.",
+  '220 Volt': {
+    text: '220V motorlarda kondansatör arızası sık görülür. Kondansatörü kontrol edin.',
     buttons: []
   },
-  "380 Volt": {
-    text: "Bu motor neyle çalışıyor?",
-    buttons: ["Kontaktör", "Invertör", "Softstarter"]
+  '380 Volt': {
+    text: 'Bu motor neyle çalışıyor?',
+    buttons: ['Kontaktör', 'Invertör', 'Softstarter']
   },
-  "Kontaktör": {
-    text: "Termik atmış mı?",
-    buttons: ["Evet", "Hayır"]
+  'Kontaktör': {
+    text: 'Termik atmış mı?',
+    buttons: ['Evet', 'Hayır']
   },
-  "Invertör": {
-    text: "Invertör ekranında hata kodu var mı?",
-    buttons: ["Var", "Yok"]
+  'Invertör': {
+    text: 'Invertör ekranında hata kodu var mı?',
+    buttons: ['Var', 'Yok']
   },
-  "Softstarter": {
-    text: "Softstarter hata ışığı yanıyor mu?",
-    buttons: ["Evet", "Hayır"]
+  'Softstarter': {
+    text: 'Softstarter hata ışığı yanıyor mu?',
+    buttons: ['Evet', 'Hayır']
   },
-  "Evet": {
-    text: "Öncelikle kesinlikle güvenlik kurallarına uy, dikkatli ve tedbirli ol. Panoda motorun bağlı olduğu kontaktör ve termik devresini gözle kontrol et. Yanık herhangi bir parça veya kablo var mı, yanık kokusu geliyor mu? Eğer böyle bir durum varsa gerekli değişimleri ve düzeltmeleri yap.",
-    buttons: ["Yanık var", "Yanık yok"]
+  'Evet': {
+    text: 'Öncelikle kesinlikle güvenlik kurallarına uy, dikkatli ve tedbirli ol. Panoda motorun bağlı olduğu kontaktör ve termik devresini gözle kontrol et. Yanık herhangi bir parça veya kablo var mı, yanık kokusu geliyor mu? Eğer böyle bir durum varsa gerekli değişimleri ve düzeltmeleri yap.',
+    buttons: ['Yanık var', 'Yanık yok']
   },
-  "Yanık var": {
-    text: "Yanık olan parça veya kabloyu değiştirin. Değişimden sonra tekrar deneyin.",
+  'Yanık var': {
+    text: 'Yanık olan parça veya kabloyu değiştirin. Değişimden sonra tekrar deneyin.',
     buttons: []
   },
-  "Yanık yok": {
-    text: "Termiği resetle ve start butonuna bas, bak bakalım termik tekrar atıyor mu?",
-    buttons: ["Atmıyor", "Bir süre sonra atıyor", "Hemen atıyor"]
+  'Yanık yok': {
+    text: 'Termiği resetle ve start butonuna bas, bak bakalım termik tekrar atıyor mu?',
+    buttons: ['Atmıyor', 'Bir süre sonra atıyor', 'Hemen atıyor']
   },
-  "Atmıyor": {
-    text: "Motor çalışmaya başladı. Sorununuz çözülmüş görünüyor. Takipte kalın.",
+  'Atmıyor': {
+    text: 'Motor çalışmaya başladı. Sorununuz çözülmüş görünüyor. Takipte kalın.',
     buttons: []
   },
-  "Bir süre sonra atıyor": {
-    text: "Motor ısınma sorunu yaşıyor olabilir. Motorun üzerindeki fanı ve havalandırma deliklerini kontrol edin. Aşırı yük var mı kontrol edin.",
+  'Bir süre sonra atıyor': {
+    text: 'Motor ısınma sorunu yaşıyor olabilir. Motorun üzerindeki fanı ve havalandırma deliklerini kontrol edin. Aşırı yük var mı kontrol edin.',
     buttons: []
   },
-  "Hemen atıyor": {
-    text: "Bu durumda olası bir kısa devre ihtimali var. Bu kısa devre motor tarafında mı pano tarafında mı onu anlayalım. Şimdi şunu yap: Motor kablosunun panoya girip bağlandığı noktadan (klemens ya da direkt kontaktör veya termiğe bağlanmış olabilir) kabloları sıralamasına dikkat ederek sök, yani motor kablosunu panodan ayır. Termiği tekrar resetle ve start butonuna bas. Tekrar gözlemle, termik atıyor mu? Atıyorsa start butonuna basar basmaz mı atıyor yoksa yine bir süre sonra mı atıyor?",
-    buttons: ["Atmıyor2", "Bir süre sonra atıyor2", "Hemen atıyor2"]
+  'Hemen atıyor': {
+    text: 'Bu durumda olası bir kısa devre ihtimali var. Bu kısa devre motor tarafında mı pano tarafında mı onu anlayalım. Şimdi şunu yap: Motor kablosunun panoya girip bağlandığı noktadan (klemens ya da direkt kontaktör veya termiğe bağlanmış olabilir) kabloları sıralamasına dikkat ederek sök, yani motor kablosunu panodan ayır. Termiği tekrar resetle ve start butonuna bas. Tekrar gözlemle, termik atıyor mu? Atıyorsa start butonuna basar basmaz mı atıyor yoksa yine bir süre sonra mı atıyor?',
+    buttons: ['Atmıyor2', 'Bir süre sonra atıyor2', 'Hemen atıyor2']
   },
-  "Atmıyor2": {
-    text: "Şimdi önce panoda voltaj ölçümleri yapalım. Termik resetli ve start butonuna basılmış, motoru çalıştıran kontaktör çekili iken motor kablolarını çıkardığın yerden voltaj ölçümü yap. Fazlar arasında yaklaşık 375 ile 405 volt arası bir değer ölçmen lazım. Çıkan sonuç verdiğim değerler arasında ise stop butonuna bas, termiği kapat ve motor kablolarını çıkardığın yere çıkardığın sıralama ile bağla.",
-    buttons: ["Voltaj değerleri normal", "Voltaj değerleri normal değil"]
+  'Atmıyor2': {
+    text: 'Şimdi önce panoda voltaj ölçümleri yapalım. Termik resetli ve start butonuna basılmış, motoru çalıştıran kontaktör çekili iken motor kablolarını çıkardığın yerden voltaj ölçümü yap. Fazlar arasında yaklaşık 375 ile 405 volt arası bir değer ölçmen lazım. Çıkan sonuç verdiğim değerler arasında ise stop butonuna bas, termiği kapat ve motor kablolarını çıkardığın yere çıkardığın sıralama ile bağla.',
+    buttons: ['Voltaj değerleri normal', 'Voltaj değerleri normal değil']
   },
-  "Bir süre sonra atıyor2": {
-    text: "Kablo veya bağlantı noktalarında kaçak akım olabilir. Kabloları ve bağlantı noktalarını dikkatlice kontrol edin.",
+  'Bir süre sonra atıyor2': {
+    text: 'Kablo veya bağlantı noktalarında kaçak akım olabilir. Kabloları ve bağlantı noktalarını dikkatlice kontrol edin.',
     buttons: []
   },
-  "Hemen atıyor2": {
-    text: "Pano tarafında kısa devre var. Kontaktör, termik ve bağlantı noktalarını kontrol edin.",
+  'Hemen atıyor2': {
+    text: 'Pano tarafında kısa devre var. Kontaktör, termik ve bağlantı noktalarını kontrol edin.',
     buttons: []
   },
-  "Voltaj değerleri normal": {
-    text: "Kabloları çıkardığın yere bağlarken sıralamaya dikkat ettiğini varsayıyorum. Şimdi motorun yanına git ve motora bak, anormal bir durum var mı? Yakından kokla, eğer yanıksa yanık kokusunu hissedebilirsin. Sonra yapabiliyorsan motor el ile dönüyor mu kontrol et.",
-    buttons: ["Motor elle dönüyor", "Motor elle dönmüyor"]
+  'Voltaj değerleri normal': {
+    text: 'Kabloları çıkardığın yere bağlarken sıralamaya dikkat ettiğini varsayıyorum. Şimdi motorun yanına git ve motora bak, anormal bir durum var mı? Yakından kokla, eğer yanıksa yanık kokusunu hissedebilirsin. Sonra yapabiliyorsan motor el ile dönüyor mu kontrol et.',
+    buttons: ['Motor elle dönüyor', 'Motor elle dönmüyor']
   },
-  "Voltaj değerleri normal değil": {
-    text: "Pano besleme hattında sorun var. Sigortaları, kablo bağlantılarını ve şebeke gelişini kontrol edin.",
+  'Voltaj değerleri normal değil': {
+    text: 'Pano besleme hattında sorun var. Sigortaları, kablo bağlantılarını ve şebeke gelişini kontrol edin.',
     buttons: []
   },
-  "Motor elle dönüyor": {
-    text: "Şimdi klemens kapağını aç ve yine kablo sıralamasına dikkat ederek kabloları çıkarıp motordan ayır.
+  'Motor elle dönüyor': {
+    text: 'Şimdi klemens kapağını aç ve yine kablo sıralamasına dikkat ederek kabloları çıkarıp motordan ayır.
 
-Burası çok önemli, şimdi söyleyeceğim şeyleri yaparken çok dikkatli olmalısın. Kabloları motordan ayırdıktan sonra kablo boşta ve herhangi bir ucunun sana, herhangi bir yere veya birbirine temas etmediğinden emin ol. Termiği resetle ve start butonuna bas, sonra motorun yanında motordan çıkardığın kabloları çok dikkatli bir şekilde ölç. Yine fazlar arasında 375 ile 405 volt arasında değerler görmen lazım.",
-    buttons: ["Voltaj değerleri normal2", "Voltaj değerleri normal değil2"]
+Burası çok önemli, şimdi söyleyeceğim şeyleri yaparken çok dikkatli olmalısın. Kabloları motordan ayırdıktan sonra kablo boşta ve herhangi bir ucunun sana, herhangi bir yere veya birbirine temas etmediğinden emin ol. Termiği resetle ve start butonuna bas, sonra motorun yanında motordan çıkardığın kabloları çok dikkatli bir şekilde ölç. Yine fazlar arasında 375 ile 405 volt arasında değerler görmen lazım.',
+    buttons: ['Voltaj değerleri normal2', 'Voltaj değerleri normal değil2']
   },
-  "Motor elle dönmüyor": {
-    text: "Motor mekanik olarak kilitlenmiş olabilir. Motor yataklarını veya bağlı olduğu yükü kontrol edin. Motor içi arıza da olabilir, servis gerekebilir.",
+  'Motor elle dönmüyor': {
+    text: 'Motor mekanik olarak kilitlenmiş olabilir. Motor yataklarını veya bağlı olduğu yükü kontrol edin. Motor içi arıza da olabilir, servis gerekebilir.',
     buttons: []
   },
-  "Voltaj değerleri normal2": {
-    text: "Şimdi öncelikle ölçü aleti ile motorun sağlamlık kontrolünü yap. Ölçü aletini buzzer konumuna al. Önce motor klemensindeki üç ya da altı uç ile gövde arasında ölçüm yap, sonra da fazlar arasında yap ölçümü.
+  'Voltaj değerleri normal2': {
+    text: 'Şimdi öncelikle ölçü aleti ile motorun sağlamlık kontrolünü yap. Ölçü aletini buzzer konumuna al. Önce motor klemensindeki üç ya da altı uç ile gövde arasında ölçüm yap, sonra da fazlar arasında yap ölçümü.
 
 Yanık bir motorda genellikle uçlardan bir veya birkaçında gövde ile kısa devre olur ya da fazlar arasında bir faz değer göstermez veya fazlardan bir tanesi diğer ikisine göre çok farklı bir değer gösterir; bu motorun yanık olduğu anlamına gelir. Etiket bilgisine dikkat ederek motoru değiştir.
 
-Sağlam bir motorda fazlar arasındaki direnç değerleri birbirine yakın ve uçlar ile gövde arasında herhangi bir kısa devre olmaz.",
+Sağlam bir motorda fazlar arasındaki direnç değerleri birbirine yakın ve uçlar ile gövde arasında herhangi bir kısa devre olmaz.',
     buttons: []
   },
-  "Voltaj değerleri normal değil2": {
-    text: "Kablo hattında sorun var. Motordan panoya giden kabloyu kontrol edin, kopukluk veya kaçak olabilir.",
+  'Voltaj değerleri normal değil2': {
+    text: 'Kablo hattında sorun var. Motordan panoya giden kabloyu kontrol edin, kopukluk veya kaçak olabilir.',
     buttons: []
   },
-  "Hayır": {
-    text: "Motor klemensinde 3 faz var mı?",
-    buttons: ["Var", "Yok"]
+  'Hayır': {
+    text: 'Motor klemensinde 3 faz var mı?',
+    buttons: ['Var', 'Yok']
   },
-  "Var": {
-    text: "Motor sıkışmış olabilir. Yükü kontrol edin.",
+  'Var': {
+    text: 'Motor sıkışmış olabilir. Yükü kontrol edin.',
     buttons: []
   },
-  "Yok": {
-    text: "Sigorta veya kabloyu kontrol edin.",
+  'Yok': {
+    text: 'Sigorta veya kabloyu kontrol edin.',
     buttons: []
   }
 };
 
 let state = null;
-let chat = document.getElementById("chat");
+let chat = document.getElementById('chat');
 
 function addMsg(text, isUser) {
-  let div = document.createElement("div");
-  div.className = "msg " + (isUser ? "user" : "bot");
+  let div = document.createElement('div');
+  div.className = 'msg ' + (isUser ? 'user' : 'bot');
   div.textContent = text;
   chat.appendChild(div);
   chat.scrollTop = chat.scrollHeight;
 }
 
 function showButtons(buttons) {
-  let area = document.getElementById("buttons");
-  area.innerHTML = "";
+  let area = document.getElementById('buttons');
+  area.innerHTML = '';
   buttons.forEach(b => {
-    let btn = document.createElement("button");
-    btn.className = "btn";
+    let btn = document.createElement('button');
+    btn.className = 'btn';
     btn.textContent = b;
     btn.onclick = () => choose(b);
     area.appendChild(btn);
@@ -186,22 +186,22 @@ function choose(choice) {
 }
 
 function sendText() {
-  let input = document.getElementById("text-input");
+  let input = document.getElementById('text-input');
   let text = input.value.trim();
   if (!text) return;
-  input.value = "";
+  input.value = '';
   addMsg(text, true);
 
   if (state === null) {
     let lower = text.toLowerCase();
     let matched = TRIGGERS.some(t => lower.includes(t));
     if (matched) {
-      let node = TREE["start"];
+      let node = TREE['start'];
       addMsg(node.text, false);
-      state = "start";
+      state = 'start';
       showButtons(node.buttons);
     } else {
-      addMsg("⚠️ Lütfen arızayı daha açık belirtin. Örnek: Motor çalışmıyor", false);
+      addMsg('⚠️ Lütfen arızayı daha açık belirtin. Örnek: Motor çalışmıyor', false);
     }
   } else {
     let node = TREE[state];
@@ -209,21 +209,21 @@ function sendText() {
     if (match) {
       choose(match);
     } else {
-      addMsg("❓ Anlamadım. Lütfen aşağıdaki seçeneklerden birini seçin.", false);
+      addMsg('❓ Anlamadım. Lütfen aşağıdaki seçeneklerden birini seçin.', false);
       showButtons(node.buttons);
     }
   }
 }
 
 function resetChat() {
-  chat.innerHTML = "";
-  document.getElementById("buttons").innerHTML = "";
+  chat.innerHTML = '';
+  document.getElementById('buttons').innerHTML = '';
   state = null;
-  addMsg("Merhaba! Arızayı yazarak başlayın. Örnek: Motor çalışmıyor", false);
+  addMsg('Merhaba! Arızayı yazarak başlayın. Örnek: Motor çalışmıyor', false);
 }
 
-document.getElementById("text-input").addEventListener("keypress", e => {
-  if (e.key === "Enter") sendText();
+document.getElementById('text-input').addEventListener('keypress', e => {
+  if (e.key === 'Enter') sendText();
 });
 
 resetChat();
