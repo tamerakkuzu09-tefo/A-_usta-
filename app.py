@@ -1,5 +1,5 @@
 from http.server import HTTPServer, BaseHTTPRequestHandler
-import os
+import o
 
 PORT = int(os.environ.get("PORT", 8080))
 
