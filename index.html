@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Elektrik Bakim Ustasi</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: Arial, sans-serif; background: #f0f2f5; min-height: 100vh; display: flex; flex-direction: column; }
+header { background: #1a1a2e; color: white; padding: 16px 20px; text-align: center; }
+header h1 { font-size: 20px; }
+header p { font-size: 13px; color: #aaa; margin-top: 4px; }
+#chat { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; justify-content: flex-end; gap: 12px; max-height: calc(100vh - 180px); }
+.msg { max-width: 80%; padding: 12px 16px; border-radius: 16px; font-size: 15px; line-height: 1.5; word-wrap: break-word; }
+.bot { background: white; color: #222; border-bottom-left-radius: 4px; align-self: flex-start; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+.user { background: #0084ff; color: white; border-bottom-right-radius: 4px; align-self: flex-end; }
+#buttons { padding: 10px 16px; display: flex; flex-wrap: wrap; gap: 10px; background: #f0f2f5; }
+.btn { padding: 12px 20px; font-size: 15px; font-weight: bold; border: 2px solid #0084ff; border-radius: 24px; background: white; color: #0084ff; cursor: pointer; flex: 1; min-width: 120px; text-align: center; transition: all 0.2s; }
+.btn:active { background: #0084ff; color: white; }
+#input-area { display: flex; padding: 10px 16px; gap: 8px; background: white; border-top: 1px solid #ddd; }
+#text-input { flex: 1; padding: 12px; border: 1px solid #ddd; border-radius: 24px; font-size: 15px; outline: none; }
+#send-btn { padding: 12px 20px; background: #0084ff; color: white; border: none; border-radius: 24px; font-size: 15px; cursor: pointer; font-weight: bold; }
+#reset-btn { width: 100%; padding: 10px; background: #eee; border: none; font-size: 14px; cursor: pointer; color: #666; }
+</style>
+</head>
+<body>
+<header>
+  <h1>🔧 AI Elektrik Bakim Ustasi</h1>
+  <p>Arizayi yazin veya seceneklere tiklayin</p>
+</header>
+<div id="chat"></div>
+<div id="buttons"></div>
+<div id="input-area">
+  <input id="text-input" type="text" placeholder="Ornek: Motor calismiyor..." />
+  <button id="send-btn" onclick="sendText()">Gonder</button>
+</div>
+<button id="reset-btn" onclick="resetChat()">Sifirla</button>
+<script>
+var TRIGGERS = ['motor', 'ariza', 'calismiyor', 'calısmiyor', 'problem', 'sorun', 'start'];
+
+var TREE = {
+  'start': { text: 'Bu motor kac voltta calisiyor?', buttons: ['220 Volt', '380 Volt'] },
+  '220 Volt': { text: '220V motorlarda kondansator arizasi sik gorulur. Kondansatoru kontrol edin.', buttons: [] },
+  '380 Volt': { text: 'Bu motor neyle calisiyor?', buttons: ['Kontaktor', 'Invertor', 'Softstarter'] },
+  'Kontaktor': { text: 'Termik atmis mi?', buttons: ['Evet', 'Hayir'] },
+  'Invertor': { text: 'Invertor ekraninda hata kodu var mi?', buttons: ['Var', 'Yok'] },
+  'Softstarter': { text: 'Softstarter hata isigi yaniyor mu?', buttons: ['Evet', 'Hayir'] },
+  'Evet': { text: 'Oncelikle guvenlik kurallarina uy, dikkatli ol. Panoda motorun bagli oldugu kontaktor ve termik devresini gozle kontrol et. Yanik herhangi bir parca veya kablo var mi, yanik kokusu geliyor mu? Eger boyle bir durum varsa gerekli degisimleri yap.', buttons: ['Yanik var', 'Yanik yok'] },
+  'Yanik var': { text: 'Yanik olan parca veya kabloyu degistirin. Degisimden sonra tekrar deneyin.', buttons: [] },
+  'Yanik yok': { text: 'Termigi resetle ve start butonuna bas, bak bakalim termik tekrar atiyor mu?', buttons: ['Atmiyor', 'Bir sure sonra atiyor', 'Hemen atiyor'] },
+  'Atmiyor': { text: 'Motor calismaya basladi. Sorununuz cozulmus gorunuyor. Takipte kalin.', buttons: [] },
+  'Bir sure sonra atiyor': { text: 'Motor isinma sorunu yasiyor olabilir. Motorun uzerindeki fani ve havalandirma deliklerini kontrol edin. Asiri yuk var mi kontrol edin.', buttons: [] },
+  'Hemen atiyor': { text: 'Bu durumda olasi bir kisa devre ihtimali var. Motor kablosunu panodan ayir. Termigi resetle ve start butonuna bas. Termik atiyor mu?', buttons: ['Atmiyor2', 'Bir sure sonra atiyor2', 'Hemen atiyor2'] },
+  'Atmiyor2': { text: 'Simdi panoda voltaj olcumu yap. Fazlar arasinda yaklasik 375-405 volt olmali. Degerler normalde ise kabloyu geri bag.', buttons: ['Voltaj normal', 'Voltaj normal degil'] },
+  'Bir sure sonra atiyor2': { text: 'Kablo veya baglanti noktalarinda kacak akim olabilir. Kabloyu ve baglanti noktalarini kontrol edin.', buttons: [] },
+  'Hemen atiyor2': { text: 'Pano tarafinda kisa devre var. Kontaktor, termik ve baglanti noktalarini kontrol edin.', buttons: [] },
+  'Voltaj normal': { text: 'Motorun yanina git. Anormal durum var mi? Yakin kokla. Motor el ile doniyor mu kontrol et.', buttons: ['Motor elle doniyor', 'Motor elle donmuyor'] },
+  'Voltaj normal degil': { text: 'Pano besleme hattinda sorun var. Sigortaları, kablo baglantilarini ve sebeke gelisini kontrol edin.', buttons: [] },
+  'Motor elle doniyor': { text: 'Klemens kapagini ac, kabloları motordan ayir. Dikkat: kablo uclari birbirine veya sana temas etmesin. Termigi resetle, start bas ve fazlar arasinda 375-405 volt ol.', buttons: ['Voltaj normal2', 'Voltaj normal degil2'] },
+  'Motor elle donmuyor': { text: 'Motor mekanik olarak kilitlenmis olabilir. Motor yataklarini veya bagli oldugu yuku kontrol edin.', buttons: [] },
+  'Voltaj normal2': { text: 'Olcu aletini buzzer konumuna al. Motor klemensindeki uclar ile govde arasinda olcum yap, sonra fazlar arasinda yap. Yanik motorda govde ile kisa devre olur veya fazlar arasinda fark vardir. Etikete dikkat ederek motoru degistir. Saglam motorda fazlar arasindaki direnc birbrine yakin olur.', buttons: [] },
+  'Voltaj normal degil2': { text: 'Kablo hattinda sorun var. Motordan panoya giden kabloyu kontrol edin, kopukluk veya kacak olabilir.', buttons: [] },
+  'Hayir': { text: 'Motor klemensinde 3 faz var mi?', buttons: ['Var', 'Yok'] },
+  'Var': { text: 'Motor sikismis olabilir. Yuku kontrol edin.', buttons: [] },
+  'Yok': { text: 'Sigorta veya kabloyu kontrol edin.', buttons: [] }
+};
+
+var state = null;
+var chat = document.getElementById('chat');
+
+function addMsg(text, isUser) {
+  var div = document.createElement('div');
+  div.className = 'msg ' + (isUser ? 'user' : 'bot');
+  div.textContent = text;
+  chat.appendChild(div);
+  chat.scrollTop = chat.scrollHeight;
+}
+
+function showButtons(buttons) {
+  var area = document.getElementById('buttons');
+  area.innerHTML = '';
+  for (var i = 0; i < buttons.length; i++) {
+    var b = buttons[i];
+    (function(btn) {
+      var el = document.createElement('button');
+      el.className = 'btn';
+      el.textContent = btn;
+      el.onclick = function() { choose(btn); };
+      area.appendChild(el);
+    })(b);
+  }
+}
+
+function choose(choice) {
+  addMsg(choice, true);
+  var node = TREE[choice];
+  if (!node) return;
+  addMsg(node.text, false);
+  state = choice;
+  showButtons(node.buttons);
+}
+
+function sendText() {
+  var input = document.getElementById('text-input');
+  var text = input.value.trim();
+  if (!text) return;
+  input.value = '';
+  addMsg(text, true);
+  var lower = text.toLowerCase();
+
+  if (state === null) {
+    var matched = false;
+    for (var i = 0; i < TRIGGERS.length; i++) {
+      if (lower.indexOf(TRIGGERS[i]) !== -1) { matched = true; break; }
+    }
+    if (matched) {
+      var node = TREE['start'];
+      addMsg(node.text, false);
+      state = 'start';
+      showButtons(node.buttons);
+    } else {
+      addMsg('Lutfen arizayi daha acik belirtin. Ornek: Motor calismiyor', false);
+    }
+  } else {
+    var node = TREE[state];
+    var match = null;
+    for (var i = 0; i < node.buttons.length; i++) {
+      if (lower.indexOf(node.buttons[i].toLowerCase()) !== -1) { match = node.buttons[i]; break; }
+    }
+    if (match) {
+      choose(match);
+    } else {
+      addMsg('Anlamadim. Lutfen asagidaki seceneklerden birini secin.', false);
+      showButtons(node.buttons);
+    }
+  }
+}
+
+function resetChat() {
+  chat.innerHTML = '';
+  document.getElementById('buttons').innerHTML = '';
+  state = null;
+  addMsg('Merhaba! Arizayi yazarak baslayin. Ornek: Motor calismiyor', false);
+}
+
+document.getElementById('text-input').addEventListener('keypress', function(e) {
+  if (e.key === 'Enter') sendText();
+});
+
+resetChat();
+</script>
+</body>
+</html>
