@@ -40,12 +40,12 @@ var TRIGGERS = ['motor', 'ariza', 'calismiyor', 'calısmiyor', 'problem', 'sorun
 
 var TREE = {
   'start': { text: 'Bu motor kac voltta calisiyor?', buttons: ['220 Volt', '380 Volt'] },
-  '220 Volt': { text: '220V motorlarda kondansator arizasi sik gorulur. Kondansatoru kontrol edin.', buttons: [] },
+  '220 Volt': { text: '220 volt motorları çalıştırmanın birkaç yolu var. Bunlardan biri ve doğru olanı 380 volt motorlarda olduğu gibi kontaktör-termik yolu ile çalıştırmak. Ama bazen çok önemsenmediği için sadece bir sigortaya bağlı olarak ya da fiş-prizle bile çalıştırıldığı görülüyor.\n\nÖncelikle motora elektrik gelip gelmediğine bak. Gelmiyorsa sigorta, kontaktör, termik, fiş, priz ve kablo bunları kontrol et. Motor klemensinden ölçü aleti ile ölç, 210 ile 240 volt arası bir değer ölçmen lazım.\n\nMotorda titreme, değişik bir ses, kalkmaya çalışıyor ama kalkamıyor, zorlanıyor gibi durumlar varsa genellikle kondansatör arızalıdır. Kondansatörün sağlam olup olmadığını kontrol et, sağlam değilse değiştir.\n\nZorlanmanın sebebi kondansatör olmayabilir. Motorda, motorun çalıştırdığı yükte veya sistemde mekaniksel bir sıkışma olabilir. Böyle bir durum varsa önce motoru yükten ayır ve boşta çalışmayı dene. Çalışıyorsa sorun yüktedir.\n\nMotor yine çalışmıyorsa motor sargılarını ölç. Motordan çıkan uçlar ile gövde arasında kısa devre varsa ya da ana sargı veya yardımcı sargı değer göstermiyorsa motor yanıktır.', buttons: [] },
   '380 Volt': { text: 'Bu motor neyle calisiyor?', buttons: ['Kontaktor', 'Invertor', 'Softstarter'] },
   'Kontaktor': { text: 'Termik atmis mi?', buttons: ['Evet', 'Hayir'] },
   'Invertor': { text: 'Invertor ekraninda hata kodu var mi?', buttons: ['Var', 'Yok'] },
   'Softstarter': { text: 'Softstarter hata isigi yaniyor mu?', buttons: ['Evet', 'Hayir'] },
-  'Evet': { text: 'Oncelikle guvenlik kurallarina uy, dikkatli ol. Panoda motorun bagli oldugu kontaktor ve termik devresini gozle kontrol et. Yanik herhangi bir parca veya kablo var mi, yanik kokusu geliyor mu? ', buttons: ['Yanik var', 'Yanik yok'] },
+  'Evet': { text: 'Oncelikle guvenlik kurallarina uy, dikkatli ol. Panoda motorun bagli oldugu kontaktor ve termik devresini gozle kontrol et. Yanik herhangi bir parca veya kablo var mi, yanik kokusu geliyor mu? Eger boyle bir durum varsa gerekli degisimleri yap.', buttons: ['Yanik var', 'Yanik yok'] },
   'Yanik var': { text: 'Yanik olan parca veya kabloyu degistirin. Degisimden sonra tekrar deneyin.', buttons: [] },
   'Yanik yok': { text: 'Termigi resetle ve start butonuna bas, bak bakalim termik tekrar atiyor mu?', buttons: ['Atmiyor', 'Bir sure sonra atiyor', 'Hemen atiyor'] },
   'Atmiyor': { text: 'O zaman sorun değişken yükle ilgili olabilir. Anlık bir zorlanma sırasında akım artıp termik atmış olabilir. Start butonuna bas motoru çalıştır ve motor akımlarını kontrol et.', buttons: [] },
@@ -73,6 +73,7 @@ var chat = document.getElementById('chat');
 function addMsg(text, isUser) {
   var div = document.createElement('div');
   div.className = 'msg ' + (isUser ? 'user' : 'bot');
+  div.style.whiteSpace = 'pre-wrap';
   div.textContent = text;
   chat.appendChild(div);
   chat.scrollTop = chat.scrollHeight;
