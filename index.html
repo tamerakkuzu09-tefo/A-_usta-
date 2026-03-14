@@ -3,471 +3,157 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ElektroAI &#8212; Ak&#305;ll&#305; Elektrik Bak&#305;m Asistan&#305;</title>
+<title>ElektroAI</title>
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #0a0e1a;
-  --surface: #111827;
-  --surface2: #1a2235;
-  --border: #1e2d45;
-  --accent: #f59e0b;
-  --accent2: #3b82f6;
-  --danger: #ef4444;
-  --success: #10b981;
-  --text: #e2e8f0;
-  --text-muted: #64748b;
-  --bot-bg: #151f30;
-  --user-bg: #1e3a5f;
+  --bg: #0a0e1a; --surface: #111827; --surface2: #1a2235;
+  --border: #1e2d45; --accent: #f59e0b; --accent2: #3b82f6;
+  --danger: #ef4444; --success: #10b981; --text: #e2e8f0;
+  --text-muted: #64748b; --bot-bg: #151f30; --user-bg: #1e3a5f;
 }
-
 * { box-sizing: border-box; margin: 0; padding: 0; }
-
-body {
-  font-family: 'Syne', sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-
-/* Animated background grid */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background-image:
-    linear-gradient(rgba(245,158,11,0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(245,158,11,0.03) 1px, transparent 1px);
-  background-size: 40px 40px;
-  pointer-events: none;
-  z-index: 0;
-}
-
-/* Header */
-header {
-  position: relative;
-  z-index: 10;
-  background: var(--surface);
-  border-bottom: 1px solid var(--border);
-  padding: 14px 20px;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
-
-.header-icon {
-  width: 44px;
-  height: 44px;
-  background: linear-gradient(135deg, var(--accent), #d97706);
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 22px;
-  flex-shrink: 0;
-  box-shadow: 0 0 20px rgba(245,158,11,0.3);
-}
-
-.header-text h1 {
-  font-size: 18px;
-  font-weight: 800;
-  letter-spacing: -0.5px;
-  color: white;
-}
-
-.header-text p {
-  font-size: 12px;
-  color: var(--text-muted);
-  font-family: 'Space Mono', monospace;
-  margin-top: 2px;
-}
-
-.status-dot {
-  margin-left: auto;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 12px;
-  color: var(--success);
-  font-family: 'Space Mono', monospace;
-}
-
-.status-dot::before {
-  content: '';
-  width: 7px;
-  height: 7px;
-  background: var(--success);
-  border-radius: 50%;
-  animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(16,185,129,0.4); }
-  50% { opacity: 0.8; box-shadow: 0 0 0 5px rgba(16,185,129,0); }
-}
-
-/* Chat area */
-#chat {
-  flex: 1;
-  overflow-y: auto;
-  padding: 20px 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  position: relative;
-  z-index: 1;
-  scroll-behavior: smooth;
-}
-
+body { font-family: 'Syne', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+body::before { content: ''; position: fixed; inset: 0; background-image: linear-gradient(rgba(245,158,11,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(245,158,11,0.03) 1px, transparent 1px); background-size: 40px 40px; pointer-events: none; z-index: 0; }
+header { position: relative; z-index: 10; background: var(--surface); border-bottom: 1px solid var(--border); padding: 14px 20px; display: flex; align-items: center; gap: 14px; }
+.header-icon { width: 44px; height: 44px; background: linear-gradient(135deg, var(--accent), #d97706); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; box-shadow: 0 0 20px rgba(245,158,11,0.3); }
+.header-text h1 { font-size: 18px; font-weight: 800; letter-spacing: -0.5px; color: white; }
+.header-text p { font-size: 12px; color: var(--text-muted); font-family: 'Space Mono', monospace; margin-top: 2px; }
+.status-dot { margin-left: auto; display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--success); font-family: 'Space Mono', monospace; }
+.status-dot::before { content: ''; width: 7px; height: 7px; background: var(--success); border-radius: 50%; animation: pulse 2s infinite; }
+@keyframes pulse { 0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(16,185,129,0.4); } 50% { opacity: 0.8; box-shadow: 0 0 0 5px rgba(16,185,129,0); } }
+#chat { flex: 1; overflow-y: auto; padding: 20px 16px; display: flex; flex-direction: column; gap: 14px; position: relative; z-index: 1; scroll-behavior: smooth; max-height: calc(100vh - 200px); }
 #chat::-webkit-scrollbar { width: 4px; }
-#chat::-webkit-scrollbar-track { background: transparent; }
 #chat::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
-
-/* Messages */
-.msg-wrapper {
-  display: flex;
-  gap: 10px;
-  animation: slideIn 0.25s ease;
-}
-
+.msg-wrapper { display: flex; gap: 10px; animation: slideIn 0.25s ease; }
 .msg-wrapper.user { flex-direction: row-reverse; }
-
-@keyframes slideIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.avatar {
-  width: 32px;
-  height: 32px;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 16px;
-  flex-shrink: 0;
-  margin-top: 2px;
-}
-
-.avatar.bot { background: linear-gradient(135deg, var(--accent), #d97706); }
-.avatar.user { background: var(--user-bg); border: 1px solid var(--accent2); }
-
-.msg {
-  max-width: 78%;
-  padding: 12px 16px;
-  border-radius: 16px;
-  font-size: 14px;
-  line-height: 1.65;
-  word-wrap: break-word;
-  white-space: pre-wrap;
-}
-
-.msg.bot {
-  background: var(--bot-bg);
-  border: 1px solid var(--border);
-  border-bottom-left-radius: 4px;
-  color: var(--text);
-}
-
-.msg.user {
-  background: var(--user-bg);
-  border: 1px solid rgba(59,130,246,0.3);
-  border-bottom-right-radius: 4px;
-  color: #bfdbfe;
-}
-
-/* AI indicator */
-.ai-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  font-size: 10px;
-  font-family: 'Space Mono', monospace;
-  color: var(--accent);
-  background: rgba(245,158,11,0.1);
-  border: 1px solid rgba(245,158,11,0.2);
-  border-radius: 4px;
-  padding: 2px 6px;
-  margin-bottom: 6px;
-}
-
-/* Buttons area */
-#buttons {
-  padding: 10px 16px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  background: var(--surface);
-  border-top: 1px solid var(--border);
-  position: relative;
-  z-index: 10;
-}
-
-.btn {
-  padding: 10px 18px;
-  font-size: 13px;
-  font-weight: 600;
-  font-family: 'Syne', sans-serif;
-  border: 1px solid var(--accent);
-  border-radius: 8px;
-  background: rgba(245,158,11,0.08);
-  color: var(--accent);
-  cursor: pointer;
-  flex: 1;
-  min-width: 110px;
-  text-align: center;
-  transition: all 0.15s;
-  letter-spacing: 0.3px;
-}
-
-.btn:hover {
-  background: rgba(245,158,11,0.18);
-  box-shadow: 0 0 12px rgba(245,158,11,0.2);
-  transform: translateY(-1px);
-}
-
-.btn:active {
-  background: var(--accent);
-  color: #000;
-  transform: translateY(0);
-}
-
-/* Input area */
-#input-area {
-  display: flex;
-  padding: 12px 16px;
-  gap: 10px;
-  background: var(--surface);
-  border-top: 1px solid var(--border);
-  position: relative;
-  z-index: 10;
-}
-
-#text-input {
-  flex: 1;
-  padding: 12px 16px;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  font-size: 14px;
-  font-family: 'Syne', sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  outline: none;
-  transition: border-color 0.2s;
-}
-
-#text-input:focus {
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(245,158,11,0.1);
-}
-
+@keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.avatar { width: 32px; height: 32px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; margin-top: 2px; }
+.avatar.bot { background: linear-gradient(135deg, var(--accent), #d97706); color: #000; }
+.avatar.user { background: var(--user-bg); border: 1px solid var(--accent2); color: var(--accent2); }
+.msg { max-width: 78%; padding: 12px 16px; border-radius: 16px; font-size: 14px; line-height: 1.65; word-wrap: break-word; white-space: pre-wrap; }
+.msg.bot { background: var(--bot-bg); border: 1px solid var(--border); border-bottom-left-radius: 4px; color: var(--text); }
+.msg.user { background: var(--user-bg); border: 1px solid rgba(59,130,246,0.3); border-bottom-right-radius: 4px; color: #bfdbfe; }
+.ai-badge { display: inline-block; font-size: 10px; font-family: 'Space Mono', monospace; color: var(--accent); background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.2); border-radius: 4px; padding: 2px 6px; margin-bottom: 8px; }
+#buttons { padding: 10px 16px; display: flex; flex-wrap: wrap; gap: 8px; background: var(--surface); border-top: 1px solid var(--border); position: relative; z-index: 10; min-height: 10px; }
+.btn { padding: 10px 18px; font-size: 13px; font-weight: 600; font-family: 'Syne', sans-serif; border: 1px solid var(--accent); border-radius: 8px; background: rgba(245,158,11,0.08); color: var(--accent); cursor: pointer; flex: 1; min-width: 110px; text-align: center; transition: all 0.15s; }
+.btn:hover { background: rgba(245,158,11,0.18); transform: translateY(-1px); }
+.btn:active { background: var(--accent); color: #000; transform: translateY(0); }
+#input-area { display: flex; padding: 12px 16px; gap: 10px; background: var(--surface); border-top: 1px solid var(--border); position: relative; z-index: 10; }
+#text-input { flex: 1; padding: 12px 16px; border: 1px solid var(--border); border-radius: 10px; font-size: 14px; font-family: 'Syne', sans-serif; background: var(--bg); color: var(--text); outline: none; transition: border-color 0.2s; }
+#text-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(245,158,11,0.1); }
 #text-input::placeholder { color: var(--text-muted); }
-
-#send-btn {
-  padding: 12px 20px;
-  background: var(--accent);
-  color: #000;
-  border: none;
-  border-radius: 10px;
-  font-size: 14px;
-  font-weight: 700;
-  font-family: 'Syne', sans-serif;
-  cursor: pointer;
-  transition: all 0.15s;
-  white-space: nowrap;
-}
-
+#send-btn { padding: 12px 20px; background: var(--accent); color: #000; border: none; border-radius: 10px; font-size: 14px; font-weight: 700; font-family: 'Syne', sans-serif; cursor: pointer; transition: all 0.15s; white-space: nowrap; }
 #send-btn:hover { background: #fbbf24; box-shadow: 0 0 16px rgba(245,158,11,0.4); }
 #send-btn:disabled { background: var(--border); color: var(--text-muted); cursor: not-allowed; box-shadow: none; }
-
-/* Reset button */
-#reset-btn {
-  width: 100%;
-  padding: 9px;
-  background: transparent;
-  border: none;
-  border-top: 1px solid var(--border);
-  font-size: 12px;
-  font-family: 'Space Mono', monospace;
-  cursor: pointer;
-  color: var(--text-muted);
-  transition: color 0.2s;
-  position: relative;
-  z-index: 10;
-  letter-spacing: 0.5px;
-}
-
+#mode-bar { padding: 6px 16px; background: var(--surface2); border-top: 1px solid var(--border); font-size: 11px; font-family: 'Space Mono', monospace; color: var(--text-muted); display: flex; align-items: center; gap: 6px; position: relative; z-index: 10; }
+#reset-btn { width: 100%; padding: 9px; background: transparent; border: none; border-top: 1px solid var(--border); font-size: 12px; font-family: 'Space Mono', monospace; cursor: pointer; color: var(--text-muted); transition: color 0.2s; position: relative; z-index: 10; }
 #reset-btn:hover { color: var(--danger); }
-
-/* Typing indicator */
-.typing {
-  display: flex;
-  gap: 5px;
-  padding: 14px 16px;
-  align-items: center;
-}
-
-.typing span {
-  width: 7px;
-  height: 7px;
-  background: var(--accent);
-  border-radius: 50%;
-  animation: bounce 1.2s infinite;
-  opacity: 0.6;
-}
-
+.typing { display: flex; gap: 5px; padding: 14px 16px; align-items: center; }
+.typing span { width: 7px; height: 7px; background: var(--accent); border-radius: 50%; animation: bounce 1.2s infinite; opacity: 0.6; }
 .typing span:nth-child(2) { animation-delay: 0.2s; }
 .typing span:nth-child(3) { animation-delay: 0.4s; }
-
-@keyframes bounce {
-  0%, 80%, 100% { transform: translateY(0); opacity: 0.4; }
-  40% { transform: translateY(-6px); opacity: 1; }
-}
-
-/* Mode indicator */
-#mode-bar {
-  padding: 6px 16px;
-  background: var(--surface2);
-  border-top: 1px solid var(--border);
-  font-size: 11px;
-  font-family: 'Space Mono', monospace;
-  color: var(--text-muted);
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  position: relative;
-  z-index: 10;
-}
-
-#mode-bar .mode-label {
-  color: var(--accent2);
-}
+@keyframes bounce { 0%, 80%, 100% { transform: translateY(0); opacity: 0.4; } 40% { transform: translateY(-6px); opacity: 1; } }
 </style>
 </head>
 <body>
-
 <header>
   <div class="header-icon">&#9889;</div>
   <div class="header-text">
     <h1>ElektroAI</h1>
-    <p>Ak&#305;ll&#305; Elektrik Bak&#305;m Asistan&#305;</p>
+    <p>Akilli Elektrik Bakim Asistani</p>
   </div>
   <div class="status-dot">Aktif</div>
 </header>
-
 <div id="chat"></div>
 <div id="buttons"></div>
 <div id="input-area">
-  <input id="text-input" type="text" placeholder="Ar&#305;zay&#305; yaz&#305;n... (&#246;r: motor &#231;al&#305;&#351;m&#305;yor, sigorta at&#305;yor)" />
-  <button id="send-btn" onclick="sendText()">G&#246;nder &#8593;</button>
+  <input id="text-input" type="text" placeholder="Arizayi yazin... (or: motor calısmiyor)" />
+  <button id="send-btn" onclick="sendText()">Gonder</button>
 </div>
-<div id="mode-bar">
-  Mod: <span class="mode-label" id="mode-label">Bekleniyor</span>
-</div>
-<button id="reset-btn" onclick="resetChat()">&#8634; S&#305;f&#305;rla</button>
+<div id="mode-bar">Mod: <span id="mode-label" style="color:#64748b">Bekleniyor</span></div>
+<button id="reset-btn" onclick="resetChat()">Sifirla</button>
 
 <script>
-// =====================
-// KARAR A&#286;ACI
-// =====================
-var TRIGGERS = ['motor', 'ariza', 'ar&#305;za', 'calismiyor', '&#231;al&#305;&#351;m&#305;yor', 'cal&#305;smiyor', 'problem', 'sorun', 'start', 'kontaktor', 'kontakt&#246;r', 'sigorta', 'termik', 'faz', 'voltaj', 'ak&#305;m', 'akim', 'invertor', 'invert&#246;r', 'pano', 'kablo'];
+var TRIGGERS = ['motor','ariza','calismiyor','calısmiyor','problem','sorun','start','kontaktor','sigorta','termik','faz','voltaj','akim','invertor','pano','kablo'];
 
 var TREE = {
-  'start': { text: 'Bu motor ka&#231; voltta &#231;al&#305;&#351;&#305;yor?', buttons: ['220 Volt', '380 Volt'] },
-  '220 Volt': { text: '220 volt motorlar&#305; &#231;al&#305;&#351;t&#305;rman&#305;n birka&#231; yolu var. Bunlardan biri ve do&#287;ru olan&#305; 380 volt motorlarda oldu&#287;u gibi kontakt&#246;r-termik yolu ile &#231;al&#305;&#351;t&#305;rmak. Ama bazen &#231;ok &#246;nemsenmedi&#287;i i&#231;in sadece bir sigortaya ba&#287;l&#305; olarak ya da fi&#351;-prizle bile &#231;al&#305;&#351;t&#305;r&#305;ld&#305;&#287;&#305; g&#246;r&#252;l&#252;yor.\n\n&#214;ncelikle motora elektrik gelip gelmedi&#287;ine bak. Gelmiyorsa sigorta, kontakt&#246;r, termik, fi&#351;, priz ve kablo bunlar&#305; kontrol et. Motor klemensinden &#246;l&#231;&#252; aleti ile &#246;l&#231;, 210 ile 240 volt aras&#305; bir de&#287;er &#246;l&#231;men laz&#305;m.\n\nMotorda titreme, de&#287;i&#351;ik bir ses, kalkmaya &#231;al&#305;&#351;&#305;yor ama kalkam&#305;yor, zorlan&#305;yor gibi durumlar varsa genellikle kondansat&#246;r ar&#305;zal&#305;d&#305;r. Kondansat&#246;r&#252;n sa&#287;lam olup olmad&#305;&#287;&#305;n&#305; kontrol et, sa&#287;lam de&#287;ilse de&#287;i&#351;tir.\n\nZorlanman&#305;n sebebi kondansat&#246;r olmayabilir. Motorda, motorun &#231;al&#305;&#351;t&#305;rd&#305;&#287;&#305; y&#252;kte veya sistemde mekaniksel bir s&#305;k&#305;&#351;ma olabilir. B&#246;yle bir durum varsa &#246;nce motoru y&#252;kten ay&#305;r ve bo&#351;ta &#231;al&#305;&#351;may&#305; dene. &#199;al&#305;&#351;&#305;yorsa sorun y&#252;ktedir.\n\nMotor yine &#231;al&#305;&#351;m&#305;yorsa motor sarg&#305;lar&#305;n&#305; &#246;l&#231;. Motordan &#231;&#305;kan u&#231;lar ile g&#246;vde aras&#305;nda k&#305;sa devre varsa ya da ana sarg&#305; veya yard&#305;mc&#305; sarg&#305; de&#287;er g&#246;stermiyorsa motor yan&#305;kt&#305;r.', buttons: [] },
-  '380 Volt': { text: 'Bu motor neyle &#231;al&#305;&#351;&#305;yor?', buttons: ['Kontakt&#246;r', 'Invert&#246;r', 'Softstarter'] },
-  'Kontakt&#246;r': { text: 'Termik atm&#305;&#351; m&#305;?', buttons: ['Evet', 'Hay&#305;r'] },
-  'Invert&#246;r': { text: 'Invert&#246;r ekran&#305;nda hata kodu var m&#305;?', buttons: ['Var', 'Yok'] },
-  'Softstarter': { text: 'Softstarter hata &#305;&#351;&#305;&#287;&#305; yan&#305;yor mu?', buttons: ['Evet', 'Hay&#305;r'] },
-  'Evet': { text: '&#214;ncelikle g&#252;venlik kurallar&#305;na uy, dikkatli ol. Panoda motorun ba&#287;l&#305; oldu&#287;u kontakt&#246;r ve termik devresini g&#246;zle kontrol et. Yan&#305;k herhangi bir par&#231;a veya kablo var m&#305;, yan&#305;k kokusu geliyor mu? E&#287;er b&#246;yle bir durum varsa gerekli de&#287;i&#351;imleri yap.', buttons: ['Yan&#305;k var', 'Yan&#305;k yok'] },
-  'Yan&#305;k var': { text: 'Yan&#305;k olan par&#231;a veya kabloyu de&#287;i&#351;tirin. De&#287;i&#351;imden sonra tekrar deneyin.', buttons: [] },
-  'Yan&#305;k yok': { text: 'Termi&#287;i resetle ve start butonuna bas, bak bakal&#305;m termik tekrar at&#305;yor mu?', buttons: ['Atm&#305;yor', 'Bir s&#252;re sonra at&#305;yor', 'Hemen at&#305;yor'] },
-  'Atm&#305;yor': { text: 'O zaman sorun de&#287;i&#351;ken y&#252;kle ilgili olabilir. Anl&#305;k bir zorlanma s&#305;ras&#305;nda ak&#305;m art&#305;p termik atm&#305;&#351; olabilir. Start butonuna bas motoru &#231;al&#305;&#351;t&#305;r ve motor ak&#305;mlar&#305;n&#305; kontrol et.', buttons: [] },
-  'Bir s&#252;re sonra at&#305;yor': { text: 'Bu durumda motor &#231;ekmesi gereken ak&#305;mdan daha fazla ak&#305;m &#231;ekiyor demektir. Ya y&#252;k motora uygun de&#287;ildir ya da mekanik bir zorlanma vard&#305;r. Motoru ve &#231;al&#305;&#351;t&#305;rd&#305;&#287;&#305; y&#252;k&#252; mekaniksel olarak kontrol et.', buttons: [] },
-  'Hemen at&#305;yor': { text: 'Bu durumda olas&#305; bir k&#305;sa devre ihtimali var. Bu k&#305;sa devre motor taraf&#305;nda m&#305; pano taraf&#305;nda m&#305; onu anlayal&#305;m. &#350;imdi &#351;unu yap: Motor kablosunun panoya girip ba&#287;land&#305;&#287;&#305; noktadan (klemens ya da direkt kontakt&#246;r veya termi&#287;e ba&#287;lanm&#305;&#351; olabilir) kablolar&#305; s&#305;ralamas&#305;na dikkat ederek s&#246;k, yani motor kablosunu panodan ay&#305;r. Termi&#287;i tekrar resetle ve start butonuna bas. Tekrar g&#246;zlemle, termik at&#305;yor mu?', buttons: ['Atm&#305;yor (kablo &#231;&#305;kar&#305;nca)', 'Bir s&#252;re sonra at&#305;yor (kablo &#231;&#305;kar&#305;nca)', 'Hemen at&#305;yor (kablo &#231;&#305;kar&#305;nca)'] },
-  'Atm&#305;yor (kablo &#231;&#305;kar&#305;nca)': { text: '&#350;imdi &#246;nce panoda voltaj &#246;l&#231;&#252;mleri yapal&#305;m. Termik resetli ve start butonuna bas&#305;lm&#305;&#351;, motoru &#231;al&#305;&#351;t&#305;ran kontakt&#246;r &#231;ekili iken motor kablolar&#305;n&#305; &#231;&#305;kard&#305;&#287;&#305;n yerden voltaj &#246;l&#231;&#252;m&#252; yap. Fazlar aras&#305;nda yakla&#351;&#305;k 375 ile 405 volt aras&#305; bir de&#287;er &#246;l&#231;men laz&#305;m.', buttons: ['Voltaj normal', 'Voltaj normal de&#287;il'] },
-  'Bir s&#252;re sonra at&#305;yor (kablo &#231;&#305;kar&#305;nca)': { text: 'Kablo veya ba&#287;lant&#305; noktalar&#305;nda ka&#231;ak ak&#305;m olabilir. Kabloyu ve ba&#287;lant&#305; noktalar&#305;n&#305; kontrol edin.', buttons: [] },
-  'Hemen at&#305;yor (kablo &#231;&#305;kar&#305;nca)': { text: 'Pano taraf&#305;nda k&#305;sa devre var. Kontakt&#246;r, termik ve ba&#287;lant&#305; noktalar&#305;n&#305; kontrol edin.', buttons: [] },
-  'Voltaj normal': { text: 'Kablolar&#305; &#231;&#305;kard&#305;&#287;&#305;n yere ba&#287;larken s&#305;ralamaya dikkat etti&#287;ini varsay&#305;yorum. &#350;imdi motorun yan&#305;na git ve motora bak, anormal bir durum var m&#305;? Yak&#305;ndan kokla, e&#287;er yan&#305;ksa yan&#305;k kokusunu hissedebilirsin. Sonra yapabiliyorsan motor el ile d&#246;n&#252;yor mu kontrol et.', buttons: ['Motor elle d&#246;n&#252;yor', 'Motor elle d&#246;nm&#252;yor'] },
-  'Voltaj normal de&#287;il': { text: 'Pano besleme hatt&#305;nda sorun var. Sigortalar&#305;, kablo ba&#287;lant&#305;lar&#305;n&#305; ve &#351;ebeke geli&#351;ini kontrol edin.', buttons: [] },
-  'Motor elle d&#246;n&#252;yor': { text: '&#350;imdi klemens kapa&#287;&#305;n&#305; a&#231; ve yine kablo s&#305;ralamas&#305;na dikkat ederek kablolar&#305; &#231;&#305;kar&#305;p motordan ay&#305;r. Buras&#305; &#231;ok &#246;nemli, &#351;imdi s&#246;yledi&#287;im &#351;eyleri yaparken &#231;ok dikkatli olmal&#305;s&#305;n. Kablolar&#305; motordan ay&#305;rd&#305;ktan sonra kablo bo&#351;ta ve herhangi bir ucunun sana, herhangi bir yere veya birbirine temas etmedi&#287;inden emin ol. Termi&#287;i resetle ve start butonuna bas, sonra motorun yan&#305;nda motordan &#231;&#305;kard&#305;&#287;&#305;n kablolar&#305; &#231;ok dikkatli bir &#351;ekilde &#246;l&#231;. Yine fazlar aras&#305;nda 375 ile 405 volt aras&#305;nda de&#287;erler g&#246;rmen laz&#305;m.', buttons: ['Voltaj normal (motor yan&#305;nda)', 'Voltaj normal de&#287;il (motor yan&#305;nda)'] },
-  'Motor elle d&#246;nm&#252;yor': { text: 'E&#287;er m&#252;mk&#252;nse motora ba&#287;l&#305; olan y&#252;k&#252; motordan ay&#305;r (motora ba&#287;l&#305; olan kay&#305;&#351;, zincir, red&#252;kt&#246;r, pompa, fan vb.) ve tekrar motorun elle d&#246;n&#252;p d&#246;nmedi&#287;ini kontrol et.', buttons: ['Y&#252;k ayr&#305;ld&#305; motor d&#246;n&#252;yor', 'Y&#252;k ayr&#305;ld&#305; motor d&#246;nm&#252;yor'] },
-  'Y&#252;k ayr&#305;ld&#305; motor d&#246;n&#252;yor': { text: 'Y&#252;k&#252; ay&#305;rd&#305;ktan sonra motor elle d&#246;n&#252;yorsa y&#252;kle ilgili mekaniksel bir sorun vard&#305;r. Termik atma sebebi ve motorun &#231;al&#305;&#351;mama sebebi budur.', buttons: [] },
-  'Y&#252;k ayr&#305;ld&#305; motor d&#246;nm&#252;yor': { text: 'Motor elle d&#246;nm&#252;yorsa motorda mekaniksel bir s&#305;k&#305;&#351;ma vard&#305;r. Muhtemelen rulman kilitlemi&#351;tir. Varsa motoru yede&#287;i ile de&#287;i&#351;tir ya da bak&#305;m yap.', buttons: [] },
-  'Voltaj normal (motor yan&#305;nda)': { text: '&#350;imdi &#246;nce &#246;l&#231;&#252; aleti ile motorun sa&#287;laml&#305;k kontrol&#252;n&#252; yap. &#214;l&#231;&#252; aletini buzzer konumuna al. &#214;nce motor klemensindeki &#252;&#231; ya da alt&#305; u&#231; ile g&#246;vde aras&#305;nda &#246;l&#231;&#252;m yap, sonra da fazlar aras&#305;nda yap. Yan&#305;k bir motorda genellikle u&#231;lardan bir veya birka&#231;&#305;nda g&#246;vde ile k&#305;sa devre olur ya da fazlar aras&#305;nda bir faz de&#287;er g&#246;stermez; bu motorun yan&#305;k oldu&#287;u anlam&#305;na gelir, etiket bilgisine dikkat ederek motoru de&#287;i&#351;tir. Sa&#287;lam bir motorda fazlar aras&#305;ndaki diren&#231; de&#287;erleri birbirine yak&#305;n ve u&#231;lar ile g&#246;vde aras&#305;nda herhangi bir k&#305;sa devre olmaz.', buttons: [] },
-  'Voltaj normal de&#287;il (motor yan&#305;nda)': { text: 'Kablo hatt&#305;nda sorun var. Motordan panoya giden kabloyu kontrol edin, kopukluk veya ka&#231;ak olabilir.', buttons: [] },
-  'Hay&#305;r': { text: 'Motoru &#231;al&#305;&#351;t&#305;ran kontakt&#246;r &#231;ekiyor mu?', buttons: ['Evet &#231;ekiyor', 'Hay&#305;r &#231;ekmiyor'] },
-  'Hay&#305;r &#231;ekmiyor': { text: 'Motoru &#231;al&#305;&#351;t&#305;ran kontakt&#246;r&#252;n bobin u&#231;lar&#305;na (A1 ve A2) enerji geliyor mu kontrol et. Ama burada kontakt&#246;r&#252;n &#231;al&#305;&#351;ma voltaj&#305;n&#305; bilmen gerekiyor. Genelde kontakt&#246;r &#252;zerinde yazar. (220 volt AC, 110 volt AC, 42 volt AC, 24 volt AC ya da DC, 12 volt AC ya da DC) E&#287;er yazm&#305;yorsa mant&#305;kl&#305; olan &#246;l&#231;&#252; aletini AC moduna al&#305;p ilk &#246;l&#231;&#252;m&#252; bu &#351;ekilde yapmak. E&#287;er herhangi bir de&#287;er g&#246;rmezsen o zaman DC moda al&#305;p &#246;l&#231;&#252;m&#252; &#246;yle yap. E&#287;er bobin u&#231;lar&#305;na enerji gelmiyorsa sistemde kontakt&#246;r&#252; enerjileyen devre eleman&#305;n&#305; kontrol et. (Start butonu, sens&#246;r, sivi&#231;, PLC vs.)', buttons: [] },
-  'Evet &#231;ekiyor': { text: 'Kontakt&#246;r&#252;n giri&#351; ve &#231;&#305;k&#305;&#351; u&#231;lar&#305;ndaki &#252;&#231; faz voltaj de&#287;erlerini &#246;l&#231;. 370 volt ile 410 volt aras&#305;nda olmal&#305;. E&#287;er kontakt&#246;r&#252;n giri&#351; taraf&#305;ndaki &#252;&#231; faz normal ama &#231;&#305;k&#305;&#351; taraf&#305;nda &#252;&#231; faz voltajlar&#305;nda eksiklik varsa ya da voltaj hi&#231; yoksa kontakt&#246;r ar&#305;zal&#305;d&#305;r. (Bu arada faz eksikli&#287;i varsa motor iki faza kal&#305;p termik att&#305;r&#305;r.) E&#287;er kontakt&#246;r&#252;n giri&#351; taraf&#305;nda voltaj yoksa kontakt&#246;re enerji gelmiyor demektir.', buttons: [] },
-  'Var': { text: 'Invert&#246;r ekran&#305;ndaki hata kodunu yaz&#305;n, ar&#305;za analizine yard&#305;mc&#305; olay&#305;m.', buttons: [] },
-  'Yok': { text: 'Invert&#246;rde hata kodu yoksa &#351;unlar&#305; kontrol edin:\n\n1. Invert&#246;r&#252;n &#231;&#305;k&#305;&#351; u&#231;lar&#305;nda (U, V, W) voltaj var m&#305;?\n2. Invert&#246;r&#252;n giri&#351; voltaj&#305; normal mi? (380V i&#231;in yakla&#351;&#305;k 375-405V)\n3. Enable/Run sinyali invert&#246;re geliyor mu?\n4. Referans frekans s&#305;f&#305;r m&#305;?', buttons: [] }
+  'start': { text: 'Bu motor kac voltta calisiyor?', buttons: ['220 Volt', '380 Volt'] },
+  '220 Volt': { text: '220 volt motorlari calistirmanin dogru yolu kontaktor-termik ile calistirmaktir.\n\nOnce motora elektrik gelip gelmedigini kontrol et. Gelmiyorsa sigorta, kontaktor, termik, fis, priz ve kabloyu kontrol et. Motor klemensinden 210-240 volt olmasi lazim.\n\nMotorda titreme, ses, zorlanma varsa kondansator arizali olabilir. Kondansatoru olc, sağlam degilse degistir.\n\nZorlanma kondansatordan degil mekanik sikismadan da olabilir. Motoru yukten ayir, bosta calistir. Calisirsa sorun yuktur.\n\nMotor hala calismiyorsa sargılari olc. Uclar ile govde arası kisa devre veya sargı deger gostermiyorsa motor yanikdir.', buttons: [] },
+  '380 Volt': { text: 'Bu motor neyle calisiyor?', buttons: ['Kontaktor', 'Invertor', 'Softstarter'] },
+  'Kontaktor': { text: 'Termik atmis mi?', buttons: ['Evet', 'Hayir'] },
+  'Invertor': { text: 'Invertor ekraninda hata kodu var mi?', buttons: ['Var', 'Yok'] },
+  'Softstarter': { text: 'Softstarter hata isigi yaniyor mu?', buttons: ['Evet', 'Hayir'] },
+  'Evet': { text: 'Once guvenlik kurallarina uy! Panodaki kontaktor ve termik devresini gozle kontrol et. Yanik parca veya kablo var mi? Yanik kokusu geliyor mu?', buttons: ['Yanik var', 'Yanik yok'] },
+  'Yanik var': { text: 'Yanik olan parca veya kabloyu degistirin. Degisimden sonra tekrar deneyin.', buttons: [] },
+  'Yanik yok': { text: 'Termigi resetle ve start butonuna bas. Termik tekrar atiyor mu?', buttons: ['Atmiyor', 'Bir sure sonra atiyor', 'Hemen atiyor'] },
+  'Atmiyor': { text: 'Sorun degisken yukle ilgili olabilir. Anlik zorlanmada akim artip termik atmis olabilir. Motoru calistir ve akimlarini kontrol et.', buttons: [] },
+  'Bir sure sonra atiyor': { text: 'Motor fazla akim cekiyor. Ya yuk motora uygun degil ya da mekanik zorlanma var. Motoru ve yuku mekaniksel olarak kontrol et.', buttons: [] },
+  'Hemen atiyor': { text: 'Kisa devre ihtimali var. Motor mi pano mu anlayalim.\n\nMotor kablosunu panodan soK (klemens veya kontaktor/termige bagli olabilir). Termigi resetle, start butonuna bas. Termik atiyor mu?', buttons: ['Atmiyor2', 'Bir sure sonra atiyor2', 'Hemen atiyor2'] },
+  'Atmiyor2': { text: 'Simdi pano voltaj olcumleri yapalim. Kontaktor cekili iken kablo cikis noktasindan voltaj olc. Fazlar arasi 375-405 volt olmasi lazim.', buttons: ['Voltaj normal', 'Voltaj normal degil'] },
+  'Bir sure sonra atiyor2': { text: 'Kablo veya baglanti noktalarinda kacak akim olabilir. Kabloyu ve baglantilari kontrol edin.', buttons: [] },
+  'Hemen atiyor2': { text: 'Pano tarafinda kisa devre var. Kontaktor, termik ve baglantilari kontrol edin.', buttons: [] },
+  'Voltaj normal': { text: 'Motorun yanina git. Anormal durum var mi? Yakından kokla. Motor el ile doniyor mu?', buttons: ['Motor elle doniyor', 'Motor elle donmuyor'] },
+  'Voltaj normal degil': { text: 'Pano besleme hattinda sorun var. Sigortalari, kablo bağlantilarini ve sebeke gelisini kontrol edin.', buttons: [] },
+  'Motor elle doniyor': { text: 'Klemens kapagini ac, kabloları cıkar. Kablolar bosta iken termigi resetle, start butonuna bas. Kablo uclarinda voltaj olc. 375-405 volt olmali.', buttons: ['Voltaj normal2', 'Voltaj normal degil2'] },
+  'Motor elle donmuyor': { text: 'Motora bagli yuku ayir (kayis, zincir, reduktor, pompa, fan vb.) ve tekrar elle donup donmedigini kontrol et.', buttons: ['Yuk ayrildi motor doniyor', 'Yuk ayrildi motor donmuyor'] },
+  'Yuk ayrildi motor doniyor': { text: 'Yuk ayrılınca motor doniyor ise yukle ilgili mekaniksel sorun var. Termik atma ve calismama sebebi budur.', buttons: [] },
+  'Yuk ayrildi motor donmuyor': { text: 'Motorda mekaniksel sikisma var. Muhtemelen rulman kilitlemistir. Motoru yedegi ile degistir ya da bakim yap.', buttons: [] },
+  'Voltaj normal2': { text: 'Olcu aletini buzzer konumuna al. Once klemens uclari ile govde arasi olc, sonra fazlar arasi olc.\n\nYanik motorda uclardan birinde govde kisa devresi olur ya da bir faz deger gostermez. Bu motorun yanik oldugu anlamina gelir. Etiket bilgisine dikkat ederek degistir.\n\nSaglam motorda faz direnc degerleri birbirine yakin ve govde kisa devresi olmaz.', buttons: [] },
+  'Voltaj normal degil2': { text: 'Kablo hattinda sorun var. Motordan panoya giden kabloyu kontrol edin.', buttons: [] },
+  'Hayir': { text: 'Motoru calistiran kontaktor cekiyor mu?', buttons: ['Evet cekiyor', 'Hayir cekmıyor'] },
+  'Hayir cekmıyor': { text: 'Kontaktorun bobin uclarina (A1 ve A2) enerji geliyor mu? Kontaktorun calisma voltajini bilmen lazim, genelde uzerinde yazar (220V AC, 110V AC, 24V DC gibi).\n\nOlcu aletini once AC moduna al. Deger gormezsen DC ye gec. Enerji gelmiyorsa kontaktoru enerjileyen elemani kontrol et (start butonu, sensor, sivic, PLC vb.)', buttons: [] },
+  'Evet cekiyor': { text: 'Kontaktorun giris ve cikis uclarindaki 3 faz voltaji olc. 370-410 volt arasi olmali.\n\nGiris normal ama cikista eksiklik/yokluk varsa kontaktor arizalidir. (Faz eksikligi motor termik attırir.)\n\nGiriste de voltaj yoksa kontaktore enerji gelmiyor demektir.', buttons: [] },
+  'Var': { text: 'Invertor ekranindaki hata kodunu yazin, yardimci olayim.', buttons: [] },
+  'Yok': { text: 'Hata kodu yoksa sunlari kontrol edin:\n1. Cikis uclarinda (U, V, W) voltaj var mi?\n2. Giris voltaji normal mi? (375-405V)\n3. Enable/Run sinyali geliyor mu?\n4. Referans frekans sifir mi?', buttons: [] }
 };
 
-// =====================
-// STATE
-// =====================
 var state = null;
 var useAI = false;
 var conversationHistory = [];
-var chat = null;
-var modeLabel = null;
+var chat, modeLabel;
 
 function initDOM() {
   chat = document.getElementById('chat');
   modeLabel = document.getElementById('mode-label');
 }
 
-// =====================
-// UI HELPERS
-// =====================
 function addMsg(text, isUser, isAI) {
   var wrapper = document.createElement('div');
   wrapper.className = 'msg-wrapper ' + (isUser ? 'user' : 'bot');
-
   var avatar = document.createElement('div');
   avatar.className = 'avatar ' + (isUser ? 'user' : 'bot');
-  avatar.textContent = isUser ? '&#128119;' : '&#9889;';
-
+  avatar.textContent = isUser ? 'SN' : 'AI';
   var msgDiv = document.createElement('div');
   msgDiv.className = 'msg ' + (isUser ? 'user' : 'bot');
-
   if (isAI && !isUser) {
     var badge = document.createElement('div');
     badge.className = 'ai-badge';
-    badge.textContent = '&#10022; AI MOD';
+    badge.textContent = '* AI MODU';
     msgDiv.appendChild(badge);
   }
-
-  var textNode = document.createElement('div');
-  textNode.style.whiteSpace = 'pre-wrap';
-  textNode.textContent = text;
-  msgDiv.appendChild(textNode);
-
+  var textDiv = document.createElement('div');
+  textDiv.style.whiteSpace = 'pre-wrap';
+  textDiv.textContent = text;
+  msgDiv.appendChild(textDiv);
   wrapper.appendChild(avatar);
   wrapper.appendChild(msgDiv);
   chat.appendChild(wrapper);
   chat.scrollTop = chat.scrollHeight;
-  return msgDiv;
 }
 
 function showTyping() {
   var wrapper = document.createElement('div');
   wrapper.className = 'msg-wrapper bot';
   wrapper.id = 'typing-indicator';
-
   var avatar = document.createElement('div');
   avatar.className = 'avatar bot';
-  avatar.textContent = '&#9889;';
-
-  var typing = document.createElement('div');
-  typing.className = 'msg bot typing';
-  typing.innerHTML = '<span></span><span></span><span></span>';
-
+  avatar.textContent = 'AI';
+  var t = document.createElement('div');
+  t.className = 'msg bot typing';
+  t.innerHTML = '<span></span><span></span><span></span>';
   wrapper.appendChild(avatar);
-  wrapper.appendChild(typing);
+  wrapper.appendChild(t);
   chat.appendChild(wrapper);
   chat.scrollTop = chat.scrollHeight;
 }
@@ -477,17 +163,17 @@ function removeTyping() {
   if (t) t.remove();
 }
 
-function showButtons(buttons) {
+function showButtons(btns) {
   var area = document.getElementById('buttons');
   area.innerHTML = '';
-  for (var i = 0; i < buttons.length; i++) {
-    (function(btn) {
+  for (var i = 0; i < btns.length; i++) {
+    (function(b) {
       var el = document.createElement('button');
       el.className = 'btn';
-      el.textContent = btn;
-      el.onclick = function() { choose(btn); };
+      el.textContent = b;
+      el.onclick = function() { choose(b); };
       area.appendChild(el);
-    })(buttons[i]);
+    })(btns[i]);
   }
 }
 
@@ -496,14 +182,11 @@ function setMode(mode) {
   modeLabel.style.color = mode === 'AI Modu' ? '#f59e0b' : mode === 'Rehberli Mod' ? '#3b82f6' : '#64748b';
 }
 
-function setSendDisabled(val) {
-  document.getElementById('send-btn').disabled = val;
-  document.getElementById('text-input').disabled = val;
+function setSendDisabled(v) {
+  document.getElementById('send-btn').disabled = v;
+  document.getElementById('text-input').disabled = v;
 }
 
-// =====================
-// KARAR A&#286;ACI
-// =====================
 function choose(choice) {
   addMsg(choice, true, false);
   var node = TREE[choice];
@@ -515,76 +198,42 @@ function choose(choice) {
     showButtons(node.buttons);
   } else {
     showButtons([]);
-    // Karar a&#287;ac&#305; bitti, AI moduna ge&#231;
     setTimeout(function() {
-      addMsg('Yukar&#305;daki ad&#305;mlar&#305; uygulad&#305;n&#305;z m&#305;? Ba&#351;ka bir soru veya sorun varsa serbest yazabilirsiniz, AI size yard&#305;mc&#305; olacak.', false, false);
+      addMsg('Yukaridaki adimlari uyguladiniz mi? Baska soru varsa serbest yazabilirsiniz, AI yardimci olacak.', false, false);
       useAI = true;
       setMode('AI Modu');
-    }, 500);
+    }, 600);
   }
 }
 
-// =====================
-// AI API
-// =====================
-async function askAI(userMessage) {
+async function askAI(msg) {
   setSendDisabled(true);
   showTyping();
-
-  conversationHistory.push({ role: 'user', content: userMessage });
-
-  var systemPrompt = `Sen "ElektroAI" ad&#305;nda uzman bir elektrik bak&#305;m asistan&#305;s&#305;n. 30 y&#305;ll&#305;k elektrik bak&#305;m deneyimine sahip bir ustan&#305;n bilgisiyle donat&#305;ld&#305;n.
-
-Uzmanl&#305;k alanlar&#305;n:
-- End&#252;striyel elektrik motor ar&#305;zalar&#305; (220V ve 380V)
-- Kontakt&#246;r, termik r&#246;le, invert&#246;r, softstarter sistemleri
-- Pano ar&#305;zalar&#305;, sigorta ve kablo sorunlar&#305;
-- PLC ve otomasyon sistemleri
-- &#304;n&#351;aat elektri&#287;i (trifaze, monofaze)
-- Mekanik ve elektrik entegre ar&#305;zalar
-
-Yan&#305;t verirken:
-- &#214;nce g&#252;venlik uyar&#305;s&#305;n&#305; hat&#305;rlat
-- Ad&#305;m ad&#305;m ar&#305;za tespit y&#246;ntemi ver
-- Teknik ama anla&#351;&#305;l&#305;r T&#252;rk&#231;e kullan
-- &#214;l&#231;&#252;m de&#287;erlerini belirt (voltaj, ak&#305;m, diren&#231;)
-- Pratik saha deneyiminden &#246;rnekler ver
-- Kesin bilmiyorsan "kontrol et" de, yanl&#305;&#351; y&#246;nlendirme yapma`;
-
+  conversationHistory.push({ role: 'user', content: msg });
+  var sys = 'Sen ElektroAI adinda uzman bir elektrik bakim asistanisin. 30 yillik elektrik bakim deneyimine sahip bir ustanin bilgisiyle donatildin. Uzmanlik alanlarin: endustriyel elektrik motor arizalari (220V-380V), kontaktor, termik role, invertor, softstarter, pano arizalari, sigorta, kablo, PLC ve otomasyon sistemleri, insaat elektrik. Yanit verirken once guvenlik uyarisi ver, adim adim ariza tespit yontemi anlat, olcum degerlerini belirt.';
   try {
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
+    var res = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1000,
-        system: systemPrompt,
-        messages: conversationHistory
-      })
+      body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 1000, system: sys, messages: conversationHistory })
     });
-
-    const data = await response.json();
+    var data = await res.json();
     removeTyping();
-
     if (data.content && data.content[0]) {
       var reply = data.content[0].text;
       conversationHistory.push({ role: 'assistant', content: reply });
       addMsg(reply, false, true);
     } else {
-      addMsg('Bir hata olu&#351;tu. L&#252;tfen tekrar deneyin.', false, true);
+      addMsg('Hata olustu. Tekrar deneyin.', false, false);
     }
-  } catch (err) {
+  } catch(e) {
     removeTyping();
-    addMsg('Ba&#287;lant&#305; hatas&#305;. &#304;nternet ba&#287;lant&#305;n&#305;z&#305; kontrol edin.', false, false);
+    addMsg('Baglanti hatasi. Internet baglantinizi kontrol edin.', false, false);
   }
-
   setSendDisabled(false);
   document.getElementById('text-input').focus();
 }
 
-// =====================
-// TEXT INPUT
-// =====================
 function sendText() {
   var input = document.getElementById('text-input');
   var text = input.value.trim();
@@ -593,24 +242,17 @@ function sendText() {
   addMsg(text, true, false);
   var lower = text.toLowerCase();
 
-  if (useAI) {
-    askAI(text);
-    return;
-  }
+  if (useAI) { askAI(text); return; }
 
   if (state === null) {
     var matched = TRIGGERS.some(function(t) { return lower.indexOf(t) !== -1; });
     if (matched) {
-      var node = TREE['start'];
-      addMsg(node.text, false, false);
+      addMsg(TREE['start'].text, false, false);
       state = 'start';
       setMode('Rehberli Mod');
-      showButtons(node.buttons);
+      showButtons(TREE['start'].buttons);
     } else {
-      // Direk AI'a sor
-      useAI = true;
-      setMode('AI Modu');
-      askAI(text);
+      useAI = true; setMode('AI Modu'); askAI(text);
     }
   } else {
     var node = TREE[state];
@@ -619,38 +261,22 @@ function sendText() {
       for (var i = 0; i < node.buttons.length; i++) {
         if (lower.indexOf(node.buttons[i].toLowerCase()) !== -1) { match = node.buttons[i]; break; }
       }
-      if (match) {
-        choose(match);
-      } else {
-        // Buton e&#351;le&#351;medi, AI'a y&#246;nlendir
-        useAI = true;
-        setMode('AI Modu');
-        askAI(text);
-      }
+      if (match) { choose(match); }
+      else { useAI = true; setMode('AI Modu'); askAI(text); }
     } else {
-      useAI = true;
-      setMode('AI Modu');
-      askAI(text);
+      useAI = true; setMode('AI Modu'); askAI(text);
     }
   }
 }
 
-// =====================
-// RESET
-// =====================
 function resetChat() {
   chat.innerHTML = '';
   document.getElementById('buttons').innerHTML = '';
-  state = null;
-  useAI = false;
-  conversationHistory = [];
+  state = null; useAI = false; conversationHistory = [];
   setMode('Bekleniyor');
-  addMsg('Merhaba! Ben ElektroAI &#8212; elektrik bak&#305;m asistan&#305;n&#305;z&#305;m.\n\nAr&#305;zay&#305; yazarak ba&#351;lay&#305;n veya bir soru sorun.\n&#214;rnek: "Motor &#231;al&#305;&#351;m&#305;yor", "Sigorta at&#305;yor", "Faz eksikli&#287;i var"', false, false);
+  addMsg('Merhaba! Ben ElektroAI.\n\nArizayi yazarak baslayin veya soru sorun.\nOrnek: "Motor calısmiyor", "Sigorta atiyor", "Faz eksikligi var"', false, false);
 }
 
-// =====================
-// INIT
-// =====================
 document.addEventListener('DOMContentLoaded', function() {
   initDOM();
   document.getElementById('text-input').addEventListener('keypress', function(e) {
