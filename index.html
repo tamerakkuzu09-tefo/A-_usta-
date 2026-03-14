@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ElektroAI \u2014 Ak\u0131ll\u0131 Elektrik Bak\u0131m Asistan\u0131</title>
+<title>ElektroAI &#8212; Ak&#305;ll&#305; Elektrik Bak&#305;m Asistan&#305;</title>
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -350,10 +350,10 @@ header {
 <body>
 
 <header>
-  <div class="header-icon">\u26a1</div>
+  <div class="header-icon">&#9889;</div>
   <div class="header-text">
     <h1>ElektroAI</h1>
-    <p>Ak\u0131ll\u0131 Elektrik Bak\u0131m Asistan\u0131</p>
+    <p>Ak&#305;ll&#305; Elektrik Bak&#305;m Asistan&#305;</p>
   </div>
   <div class="status-dot">Aktif</div>
 </header>
@@ -361,49 +361,49 @@ header {
 <div id="chat"></div>
 <div id="buttons"></div>
 <div id="input-area">
-  <input id="text-input" type="text" placeholder="Ar\u0131zay\u0131 yaz\u0131n... (\u00f6r: motor \u00e7al\u0131\u015fm\u0131yor, sigorta at\u0131yor)" />
-  <button id="send-btn" onclick="sendText()">G\u00f6nder \u2191</button>
+  <input id="text-input" type="text" placeholder="Ar&#305;zay&#305; yaz&#305;n... (&#246;r: motor &#231;al&#305;&#351;m&#305;yor, sigorta at&#305;yor)" />
+  <button id="send-btn" onclick="sendText()">G&#246;nder &#8593;</button>
 </div>
 <div id="mode-bar">
   Mod: <span class="mode-label" id="mode-label">Bekleniyor</span>
 </div>
-<button id="reset-btn" onclick="resetChat()">\u21ba S\u0131f\u0131rla</button>
+<button id="reset-btn" onclick="resetChat()">&#8634; S&#305;f&#305;rla</button>
 
 <script>
 // =====================
-// KARAR A\u011eACI
+// KARAR A&#286;ACI
 // =====================
-var TRIGGERS = ['motor', 'ariza', 'ar\u0131za', 'calismiyor', '\u00e7al\u0131\u015fm\u0131yor', 'cal\u0131smiyor', 'problem', 'sorun', 'start', 'kontaktor', 'kontakt\u00f6r', 'sigorta', 'termik', 'faz', 'voltaj', 'ak\u0131m', 'akim', 'invertor', 'invert\u00f6r', 'pano', 'kablo'];
+var TRIGGERS = ['motor', 'ariza', 'ar&#305;za', 'calismiyor', '&#231;al&#305;&#351;m&#305;yor', 'cal&#305;smiyor', 'problem', 'sorun', 'start', 'kontaktor', 'kontakt&#246;r', 'sigorta', 'termik', 'faz', 'voltaj', 'ak&#305;m', 'akim', 'invertor', 'invert&#246;r', 'pano', 'kablo'];
 
 var TREE = {
-  'start': { text: 'Bu motor ka\u00e7 voltta \u00e7al\u0131\u015f\u0131yor?', buttons: ['220 Volt', '380 Volt'] },
-  '220 Volt': { text: '220 volt motorlar\u0131 \u00e7al\u0131\u015ft\u0131rman\u0131n birka\u00e7 yolu var. Bunlardan biri ve do\u011fru olan\u0131 380 volt motorlarda oldu\u011fu gibi kontakt\u00f6r-termik yolu ile \u00e7al\u0131\u015ft\u0131rmak. Ama bazen \u00e7ok \u00f6nemsenmedi\u011fi i\u00e7in sadece bir sigortaya ba\u011fl\u0131 olarak ya da fi\u015f-prizle bile \u00e7al\u0131\u015ft\u0131r\u0131ld\u0131\u011f\u0131 g\u00f6r\u00fcl\u00fcyor.\n\n\u00d6ncelikle motora elektrik gelip gelmedi\u011fine bak. Gelmiyorsa sigorta, kontakt\u00f6r, termik, fi\u015f, priz ve kablo bunlar\u0131 kontrol et. Motor klemensinden \u00f6l\u00e7\u00fc aleti ile \u00f6l\u00e7, 210 ile 240 volt aras\u0131 bir de\u011fer \u00f6l\u00e7men laz\u0131m.\n\nMotorda titreme, de\u011fi\u015fik bir ses, kalkmaya \u00e7al\u0131\u015f\u0131yor ama kalkam\u0131yor, zorlan\u0131yor gibi durumlar varsa genellikle kondansat\u00f6r ar\u0131zal\u0131d\u0131r. Kondansat\u00f6r\u00fcn sa\u011flam olup olmad\u0131\u011f\u0131n\u0131 kontrol et, sa\u011flam de\u011filse de\u011fi\u015ftir.\n\nZorlanman\u0131n sebebi kondansat\u00f6r olmayabilir. Motorda, motorun \u00e7al\u0131\u015ft\u0131rd\u0131\u011f\u0131 y\u00fckte veya sistemde mekaniksel bir s\u0131k\u0131\u015fma olabilir. B\u00f6yle bir durum varsa \u00f6nce motoru y\u00fckten ay\u0131r ve bo\u015fta \u00e7al\u0131\u015fmay\u0131 dene. \u00c7al\u0131\u015f\u0131yorsa sorun y\u00fcktedir.\n\nMotor yine \u00e7al\u0131\u015fm\u0131yorsa motor sarg\u0131lar\u0131n\u0131 \u00f6l\u00e7. Motordan \u00e7\u0131kan u\u00e7lar ile g\u00f6vde aras\u0131nda k\u0131sa devre varsa ya da ana sarg\u0131 veya yard\u0131mc\u0131 sarg\u0131 de\u011fer g\u00f6stermiyorsa motor yan\u0131kt\u0131r.', buttons: [] },
-  '380 Volt': { text: 'Bu motor neyle \u00e7al\u0131\u015f\u0131yor?', buttons: ['Kontakt\u00f6r', 'Invert\u00f6r', 'Softstarter'] },
-  'Kontakt\u00f6r': { text: 'Termik atm\u0131\u015f m\u0131?', buttons: ['Evet', 'Hay\u0131r'] },
-  'Invert\u00f6r': { text: 'Invert\u00f6r ekran\u0131nda hata kodu var m\u0131?', buttons: ['Var', 'Yok'] },
-  'Softstarter': { text: 'Softstarter hata \u0131\u015f\u0131\u011f\u0131 yan\u0131yor mu?', buttons: ['Evet', 'Hay\u0131r'] },
-  'Evet': { text: '\u00d6ncelikle g\u00fcvenlik kurallar\u0131na uy, dikkatli ol. Panoda motorun ba\u011fl\u0131 oldu\u011fu kontakt\u00f6r ve termik devresini g\u00f6zle kontrol et. Yan\u0131k herhangi bir par\u00e7a veya kablo var m\u0131, yan\u0131k kokusu geliyor mu? E\u011fer b\u00f6yle bir durum varsa gerekli de\u011fi\u015fimleri yap.', buttons: ['Yan\u0131k var', 'Yan\u0131k yok'] },
-  'Yan\u0131k var': { text: 'Yan\u0131k olan par\u00e7a veya kabloyu de\u011fi\u015ftirin. De\u011fi\u015fimden sonra tekrar deneyin.', buttons: [] },
-  'Yan\u0131k yok': { text: 'Termi\u011fi resetle ve start butonuna bas, bak bakal\u0131m termik tekrar at\u0131yor mu?', buttons: ['Atm\u0131yor', 'Bir s\u00fcre sonra at\u0131yor', 'Hemen at\u0131yor'] },
-  'Atm\u0131yor': { text: 'O zaman sorun de\u011fi\u015fken y\u00fckle ilgili olabilir. Anl\u0131k bir zorlanma s\u0131ras\u0131nda ak\u0131m art\u0131p termik atm\u0131\u015f olabilir. Start butonuna bas motoru \u00e7al\u0131\u015ft\u0131r ve motor ak\u0131mlar\u0131n\u0131 kontrol et.', buttons: [] },
-  'Bir s\u00fcre sonra at\u0131yor': { text: 'Bu durumda motor \u00e7ekmesi gereken ak\u0131mdan daha fazla ak\u0131m \u00e7ekiyor demektir. Ya y\u00fck motora uygun de\u011fildir ya da mekanik bir zorlanma vard\u0131r. Motoru ve \u00e7al\u0131\u015ft\u0131rd\u0131\u011f\u0131 y\u00fck\u00fc mekaniksel olarak kontrol et.', buttons: [] },
-  'Hemen at\u0131yor': { text: 'Bu durumda olas\u0131 bir k\u0131sa devre ihtimali var. Bu k\u0131sa devre motor taraf\u0131nda m\u0131 pano taraf\u0131nda m\u0131 onu anlayal\u0131m. \u015eimdi \u015funu yap: Motor kablosunun panoya girip ba\u011fland\u0131\u011f\u0131 noktadan (klemens ya da direkt kontakt\u00f6r veya termi\u011fe ba\u011flanm\u0131\u015f olabilir) kablolar\u0131 s\u0131ralamas\u0131na dikkat ederek s\u00f6k, yani motor kablosunu panodan ay\u0131r. Termi\u011fi tekrar resetle ve start butonuna bas. Tekrar g\u00f6zlemle, termik at\u0131yor mu?', buttons: ['Atm\u0131yor (kablo \u00e7\u0131kar\u0131nca)', 'Bir s\u00fcre sonra at\u0131yor (kablo \u00e7\u0131kar\u0131nca)', 'Hemen at\u0131yor (kablo \u00e7\u0131kar\u0131nca)'] },
-  'Atm\u0131yor (kablo \u00e7\u0131kar\u0131nca)': { text: '\u015eimdi \u00f6nce panoda voltaj \u00f6l\u00e7\u00fcmleri yapal\u0131m. Termik resetli ve start butonuna bas\u0131lm\u0131\u015f, motoru \u00e7al\u0131\u015ft\u0131ran kontakt\u00f6r \u00e7ekili iken motor kablolar\u0131n\u0131 \u00e7\u0131kard\u0131\u011f\u0131n yerden voltaj \u00f6l\u00e7\u00fcm\u00fc yap. Fazlar aras\u0131nda yakla\u015f\u0131k 375 ile 405 volt aras\u0131 bir de\u011fer \u00f6l\u00e7men laz\u0131m.', buttons: ['Voltaj normal', 'Voltaj normal de\u011fil'] },
-  'Bir s\u00fcre sonra at\u0131yor (kablo \u00e7\u0131kar\u0131nca)': { text: 'Kablo veya ba\u011flant\u0131 noktalar\u0131nda ka\u00e7ak ak\u0131m olabilir. Kabloyu ve ba\u011flant\u0131 noktalar\u0131n\u0131 kontrol edin.', buttons: [] },
-  'Hemen at\u0131yor (kablo \u00e7\u0131kar\u0131nca)': { text: 'Pano taraf\u0131nda k\u0131sa devre var. Kontakt\u00f6r, termik ve ba\u011flant\u0131 noktalar\u0131n\u0131 kontrol edin.', buttons: [] },
-  'Voltaj normal': { text: 'Kablolar\u0131 \u00e7\u0131kard\u0131\u011f\u0131n yere ba\u011flarken s\u0131ralamaya dikkat etti\u011fini varsay\u0131yorum. \u015eimdi motorun yan\u0131na git ve motora bak, anormal bir durum var m\u0131? Yak\u0131ndan kokla, e\u011fer yan\u0131ksa yan\u0131k kokusunu hissedebilirsin. Sonra yapabiliyorsan motor el ile d\u00f6n\u00fcyor mu kontrol et.', buttons: ['Motor elle d\u00f6n\u00fcyor', 'Motor elle d\u00f6nm\u00fcyor'] },
-  'Voltaj normal de\u011fil': { text: 'Pano besleme hatt\u0131nda sorun var. Sigortalar\u0131, kablo ba\u011flant\u0131lar\u0131n\u0131 ve \u015febeke geli\u015fini kontrol edin.', buttons: [] },
-  'Motor elle d\u00f6n\u00fcyor': { text: '\u015eimdi klemens kapa\u011f\u0131n\u0131 a\u00e7 ve yine kablo s\u0131ralamas\u0131na dikkat ederek kablolar\u0131 \u00e7\u0131kar\u0131p motordan ay\u0131r. Buras\u0131 \u00e7ok \u00f6nemli, \u015fimdi s\u00f6yledi\u011fim \u015feyleri yaparken \u00e7ok dikkatli olmal\u0131s\u0131n. Kablolar\u0131 motordan ay\u0131rd\u0131ktan sonra kablo bo\u015fta ve herhangi bir ucunun sana, herhangi bir yere veya birbirine temas etmedi\u011finden emin ol. Termi\u011fi resetle ve start butonuna bas, sonra motorun yan\u0131nda motordan \u00e7\u0131kard\u0131\u011f\u0131n kablolar\u0131 \u00e7ok dikkatli bir \u015fekilde \u00f6l\u00e7. Yine fazlar aras\u0131nda 375 ile 405 volt aras\u0131nda de\u011ferler g\u00f6rmen laz\u0131m.', buttons: ['Voltaj normal (motor yan\u0131nda)', 'Voltaj normal de\u011fil (motor yan\u0131nda)'] },
-  'Motor elle d\u00f6nm\u00fcyor': { text: 'E\u011fer m\u00fcmk\u00fcnse motora ba\u011fl\u0131 olan y\u00fck\u00fc motordan ay\u0131r (motora ba\u011fl\u0131 olan kay\u0131\u015f, zincir, red\u00fckt\u00f6r, pompa, fan vb.) ve tekrar motorun elle d\u00f6n\u00fcp d\u00f6nmedi\u011fini kontrol et.', buttons: ['Y\u00fck ayr\u0131ld\u0131 motor d\u00f6n\u00fcyor', 'Y\u00fck ayr\u0131ld\u0131 motor d\u00f6nm\u00fcyor'] },
-  'Y\u00fck ayr\u0131ld\u0131 motor d\u00f6n\u00fcyor': { text: 'Y\u00fck\u00fc ay\u0131rd\u0131ktan sonra motor elle d\u00f6n\u00fcyorsa y\u00fckle ilgili mekaniksel bir sorun vard\u0131r. Termik atma sebebi ve motorun \u00e7al\u0131\u015fmama sebebi budur.', buttons: [] },
-  'Y\u00fck ayr\u0131ld\u0131 motor d\u00f6nm\u00fcyor': { text: 'Motor elle d\u00f6nm\u00fcyorsa motorda mekaniksel bir s\u0131k\u0131\u015fma vard\u0131r. Muhtemelen rulman kilitlemi\u015ftir. Varsa motoru yede\u011fi ile de\u011fi\u015ftir ya da bak\u0131m yap.', buttons: [] },
-  'Voltaj normal (motor yan\u0131nda)': { text: '\u015eimdi \u00f6nce \u00f6l\u00e7\u00fc aleti ile motorun sa\u011flaml\u0131k kontrol\u00fcn\u00fc yap. \u00d6l\u00e7\u00fc aletini buzzer konumuna al. \u00d6nce motor klemensindeki \u00fc\u00e7 ya da alt\u0131 u\u00e7 ile g\u00f6vde aras\u0131nda \u00f6l\u00e7\u00fcm yap, sonra da fazlar aras\u0131nda yap. Yan\u0131k bir motorda genellikle u\u00e7lardan bir veya birka\u00e7\u0131nda g\u00f6vde ile k\u0131sa devre olur ya da fazlar aras\u0131nda bir faz de\u011fer g\u00f6stermez; bu motorun yan\u0131k oldu\u011fu anlam\u0131na gelir, etiket bilgisine dikkat ederek motoru de\u011fi\u015ftir. Sa\u011flam bir motorda fazlar aras\u0131ndaki diren\u00e7 de\u011ferleri birbirine yak\u0131n ve u\u00e7lar ile g\u00f6vde aras\u0131nda herhangi bir k\u0131sa devre olmaz.', buttons: [] },
-  'Voltaj normal de\u011fil (motor yan\u0131nda)': { text: 'Kablo hatt\u0131nda sorun var. Motordan panoya giden kabloyu kontrol edin, kopukluk veya ka\u00e7ak olabilir.', buttons: [] },
-  'Hay\u0131r': { text: 'Motoru \u00e7al\u0131\u015ft\u0131ran kontakt\u00f6r \u00e7ekiyor mu?', buttons: ['Evet \u00e7ekiyor', 'Hay\u0131r \u00e7ekmiyor'] },
-  'Hay\u0131r \u00e7ekmiyor': { text: 'Motoru \u00e7al\u0131\u015ft\u0131ran kontakt\u00f6r\u00fcn bobin u\u00e7lar\u0131na (A1 ve A2) enerji geliyor mu kontrol et. Ama burada kontakt\u00f6r\u00fcn \u00e7al\u0131\u015fma voltaj\u0131n\u0131 bilmen gerekiyor. Genelde kontakt\u00f6r \u00fczerinde yazar. (220 volt AC, 110 volt AC, 42 volt AC, 24 volt AC ya da DC, 12 volt AC ya da DC) E\u011fer yazm\u0131yorsa mant\u0131kl\u0131 olan \u00f6l\u00e7\u00fc aletini AC moduna al\u0131p ilk \u00f6l\u00e7\u00fcm\u00fc bu \u015fekilde yapmak. E\u011fer herhangi bir de\u011fer g\u00f6rmezsen o zaman DC moda al\u0131p \u00f6l\u00e7\u00fcm\u00fc \u00f6yle yap. E\u011fer bobin u\u00e7lar\u0131na enerji gelmiyorsa sistemde kontakt\u00f6r\u00fc enerjileyen devre eleman\u0131n\u0131 kontrol et. (Start butonu, sens\u00f6r, sivi\u00e7, PLC vs.)', buttons: [] },
-  'Evet \u00e7ekiyor': { text: 'Kontakt\u00f6r\u00fcn giri\u015f ve \u00e7\u0131k\u0131\u015f u\u00e7lar\u0131ndaki \u00fc\u00e7 faz voltaj de\u011ferlerini \u00f6l\u00e7. 370 volt ile 410 volt aras\u0131nda olmal\u0131. E\u011fer kontakt\u00f6r\u00fcn giri\u015f taraf\u0131ndaki \u00fc\u00e7 faz normal ama \u00e7\u0131k\u0131\u015f taraf\u0131nda \u00fc\u00e7 faz voltajlar\u0131nda eksiklik varsa ya da voltaj hi\u00e7 yoksa kontakt\u00f6r ar\u0131zal\u0131d\u0131r. (Bu arada faz eksikli\u011fi varsa motor iki faza kal\u0131p termik att\u0131r\u0131r.) E\u011fer kontakt\u00f6r\u00fcn giri\u015f taraf\u0131nda voltaj yoksa kontakt\u00f6re enerji gelmiyor demektir.', buttons: [] },
-  'Var': { text: 'Invert\u00f6r ekran\u0131ndaki hata kodunu yaz\u0131n, ar\u0131za analizine yard\u0131mc\u0131 olay\u0131m.', buttons: [] },
-  'Yok': { text: 'Invert\u00f6rde hata kodu yoksa \u015funlar\u0131 kontrol edin:\n\n1. Invert\u00f6r\u00fcn \u00e7\u0131k\u0131\u015f u\u00e7lar\u0131nda (U, V, W) voltaj var m\u0131?\n2. Invert\u00f6r\u00fcn giri\u015f voltaj\u0131 normal mi? (380V i\u00e7in yakla\u015f\u0131k 375-405V)\n3. Enable/Run sinyali invert\u00f6re geliyor mu?\n4. Referans frekans s\u0131f\u0131r m\u0131?', buttons: [] }
+  'start': { text: 'Bu motor ka&#231; voltta &#231;al&#305;&#351;&#305;yor?', buttons: ['220 Volt', '380 Volt'] },
+  '220 Volt': { text: '220 volt motorlar&#305; &#231;al&#305;&#351;t&#305;rman&#305;n birka&#231; yolu var. Bunlardan biri ve do&#287;ru olan&#305; 380 volt motorlarda oldu&#287;u gibi kontakt&#246;r-termik yolu ile &#231;al&#305;&#351;t&#305;rmak. Ama bazen &#231;ok &#246;nemsenmedi&#287;i i&#231;in sadece bir sigortaya ba&#287;l&#305; olarak ya da fi&#351;-prizle bile &#231;al&#305;&#351;t&#305;r&#305;ld&#305;&#287;&#305; g&#246;r&#252;l&#252;yor.\n\n&#214;ncelikle motora elektrik gelip gelmedi&#287;ine bak. Gelmiyorsa sigorta, kontakt&#246;r, termik, fi&#351;, priz ve kablo bunlar&#305; kontrol et. Motor klemensinden &#246;l&#231;&#252; aleti ile &#246;l&#231;, 210 ile 240 volt aras&#305; bir de&#287;er &#246;l&#231;men laz&#305;m.\n\nMotorda titreme, de&#287;i&#351;ik bir ses, kalkmaya &#231;al&#305;&#351;&#305;yor ama kalkam&#305;yor, zorlan&#305;yor gibi durumlar varsa genellikle kondansat&#246;r ar&#305;zal&#305;d&#305;r. Kondansat&#246;r&#252;n sa&#287;lam olup olmad&#305;&#287;&#305;n&#305; kontrol et, sa&#287;lam de&#287;ilse de&#287;i&#351;tir.\n\nZorlanman&#305;n sebebi kondansat&#246;r olmayabilir. Motorda, motorun &#231;al&#305;&#351;t&#305;rd&#305;&#287;&#305; y&#252;kte veya sistemde mekaniksel bir s&#305;k&#305;&#351;ma olabilir. B&#246;yle bir durum varsa &#246;nce motoru y&#252;kten ay&#305;r ve bo&#351;ta &#231;al&#305;&#351;may&#305; dene. &#199;al&#305;&#351;&#305;yorsa sorun y&#252;ktedir.\n\nMotor yine &#231;al&#305;&#351;m&#305;yorsa motor sarg&#305;lar&#305;n&#305; &#246;l&#231;. Motordan &#231;&#305;kan u&#231;lar ile g&#246;vde aras&#305;nda k&#305;sa devre varsa ya da ana sarg&#305; veya yard&#305;mc&#305; sarg&#305; de&#287;er g&#246;stermiyorsa motor yan&#305;kt&#305;r.', buttons: [] },
+  '380 Volt': { text: 'Bu motor neyle &#231;al&#305;&#351;&#305;yor?', buttons: ['Kontakt&#246;r', 'Invert&#246;r', 'Softstarter'] },
+  'Kontakt&#246;r': { text: 'Termik atm&#305;&#351; m&#305;?', buttons: ['Evet', 'Hay&#305;r'] },
+  'Invert&#246;r': { text: 'Invert&#246;r ekran&#305;nda hata kodu var m&#305;?', buttons: ['Var', 'Yok'] },
+  'Softstarter': { text: 'Softstarter hata &#305;&#351;&#305;&#287;&#305; yan&#305;yor mu?', buttons: ['Evet', 'Hay&#305;r'] },
+  'Evet': { text: '&#214;ncelikle g&#252;venlik kurallar&#305;na uy, dikkatli ol. Panoda motorun ba&#287;l&#305; oldu&#287;u kontakt&#246;r ve termik devresini g&#246;zle kontrol et. Yan&#305;k herhangi bir par&#231;a veya kablo var m&#305;, yan&#305;k kokusu geliyor mu? E&#287;er b&#246;yle bir durum varsa gerekli de&#287;i&#351;imleri yap.', buttons: ['Yan&#305;k var', 'Yan&#305;k yok'] },
+  'Yan&#305;k var': { text: 'Yan&#305;k olan par&#231;a veya kabloyu de&#287;i&#351;tirin. De&#287;i&#351;imden sonra tekrar deneyin.', buttons: [] },
+  'Yan&#305;k yok': { text: 'Termi&#287;i resetle ve start butonuna bas, bak bakal&#305;m termik tekrar at&#305;yor mu?', buttons: ['Atm&#305;yor', 'Bir s&#252;re sonra at&#305;yor', 'Hemen at&#305;yor'] },
+  'Atm&#305;yor': { text: 'O zaman sorun de&#287;i&#351;ken y&#252;kle ilgili olabilir. Anl&#305;k bir zorlanma s&#305;ras&#305;nda ak&#305;m art&#305;p termik atm&#305;&#351; olabilir. Start butonuna bas motoru &#231;al&#305;&#351;t&#305;r ve motor ak&#305;mlar&#305;n&#305; kontrol et.', buttons: [] },
+  'Bir s&#252;re sonra at&#305;yor': { text: 'Bu durumda motor &#231;ekmesi gereken ak&#305;mdan daha fazla ak&#305;m &#231;ekiyor demektir. Ya y&#252;k motora uygun de&#287;ildir ya da mekanik bir zorlanma vard&#305;r. Motoru ve &#231;al&#305;&#351;t&#305;rd&#305;&#287;&#305; y&#252;k&#252; mekaniksel olarak kontrol et.', buttons: [] },
+  'Hemen at&#305;yor': { text: 'Bu durumda olas&#305; bir k&#305;sa devre ihtimali var. Bu k&#305;sa devre motor taraf&#305;nda m&#305; pano taraf&#305;nda m&#305; onu anlayal&#305;m. &#350;imdi &#351;unu yap: Motor kablosunun panoya girip ba&#287;land&#305;&#287;&#305; noktadan (klemens ya da direkt kontakt&#246;r veya termi&#287;e ba&#287;lanm&#305;&#351; olabilir) kablolar&#305; s&#305;ralamas&#305;na dikkat ederek s&#246;k, yani motor kablosunu panodan ay&#305;r. Termi&#287;i tekrar resetle ve start butonuna bas. Tekrar g&#246;zlemle, termik at&#305;yor mu?', buttons: ['Atm&#305;yor (kablo &#231;&#305;kar&#305;nca)', 'Bir s&#252;re sonra at&#305;yor (kablo &#231;&#305;kar&#305;nca)', 'Hemen at&#305;yor (kablo &#231;&#305;kar&#305;nca)'] },
+  'Atm&#305;yor (kablo &#231;&#305;kar&#305;nca)': { text: '&#350;imdi &#246;nce panoda voltaj &#246;l&#231;&#252;mleri yapal&#305;m. Termik resetli ve start butonuna bas&#305;lm&#305;&#351;, motoru &#231;al&#305;&#351;t&#305;ran kontakt&#246;r &#231;ekili iken motor kablolar&#305;n&#305; &#231;&#305;kard&#305;&#287;&#305;n yerden voltaj &#246;l&#231;&#252;m&#252; yap. Fazlar aras&#305;nda yakla&#351;&#305;k 375 ile 405 volt aras&#305; bir de&#287;er &#246;l&#231;men laz&#305;m.', buttons: ['Voltaj normal', 'Voltaj normal de&#287;il'] },
+  'Bir s&#252;re sonra at&#305;yor (kablo &#231;&#305;kar&#305;nca)': { text: 'Kablo veya ba&#287;lant&#305; noktalar&#305;nda ka&#231;ak ak&#305;m olabilir. Kabloyu ve ba&#287;lant&#305; noktalar&#305;n&#305; kontrol edin.', buttons: [] },
+  'Hemen at&#305;yor (kablo &#231;&#305;kar&#305;nca)': { text: 'Pano taraf&#305;nda k&#305;sa devre var. Kontakt&#246;r, termik ve ba&#287;lant&#305; noktalar&#305;n&#305; kontrol edin.', buttons: [] },
+  'Voltaj normal': { text: 'Kablolar&#305; &#231;&#305;kard&#305;&#287;&#305;n yere ba&#287;larken s&#305;ralamaya dikkat etti&#287;ini varsay&#305;yorum. &#350;imdi motorun yan&#305;na git ve motora bak, anormal bir durum var m&#305;? Yak&#305;ndan kokla, e&#287;er yan&#305;ksa yan&#305;k kokusunu hissedebilirsin. Sonra yapabiliyorsan motor el ile d&#246;n&#252;yor mu kontrol et.', buttons: ['Motor elle d&#246;n&#252;yor', 'Motor elle d&#246;nm&#252;yor'] },
+  'Voltaj normal de&#287;il': { text: 'Pano besleme hatt&#305;nda sorun var. Sigortalar&#305;, kablo ba&#287;lant&#305;lar&#305;n&#305; ve &#351;ebeke geli&#351;ini kontrol edin.', buttons: [] },
+  'Motor elle d&#246;n&#252;yor': { text: '&#350;imdi klemens kapa&#287;&#305;n&#305; a&#231; ve yine kablo s&#305;ralamas&#305;na dikkat ederek kablolar&#305; &#231;&#305;kar&#305;p motordan ay&#305;r. Buras&#305; &#231;ok &#246;nemli, &#351;imdi s&#246;yledi&#287;im &#351;eyleri yaparken &#231;ok dikkatli olmal&#305;s&#305;n. Kablolar&#305; motordan ay&#305;rd&#305;ktan sonra kablo bo&#351;ta ve herhangi bir ucunun sana, herhangi bir yere veya birbirine temas etmedi&#287;inden emin ol. Termi&#287;i resetle ve start butonuna bas, sonra motorun yan&#305;nda motordan &#231;&#305;kard&#305;&#287;&#305;n kablolar&#305; &#231;ok dikkatli bir &#351;ekilde &#246;l&#231;. Yine fazlar aras&#305;nda 375 ile 405 volt aras&#305;nda de&#287;erler g&#246;rmen laz&#305;m.', buttons: ['Voltaj normal (motor yan&#305;nda)', 'Voltaj normal de&#287;il (motor yan&#305;nda)'] },
+  'Motor elle d&#246;nm&#252;yor': { text: 'E&#287;er m&#252;mk&#252;nse motora ba&#287;l&#305; olan y&#252;k&#252; motordan ay&#305;r (motora ba&#287;l&#305; olan kay&#305;&#351;, zincir, red&#252;kt&#246;r, pompa, fan vb.) ve tekrar motorun elle d&#246;n&#252;p d&#246;nmedi&#287;ini kontrol et.', buttons: ['Y&#252;k ayr&#305;ld&#305; motor d&#246;n&#252;yor', 'Y&#252;k ayr&#305;ld&#305; motor d&#246;nm&#252;yor'] },
+  'Y&#252;k ayr&#305;ld&#305; motor d&#246;n&#252;yor': { text: 'Y&#252;k&#252; ay&#305;rd&#305;ktan sonra motor elle d&#246;n&#252;yorsa y&#252;kle ilgili mekaniksel bir sorun vard&#305;r. Termik atma sebebi ve motorun &#231;al&#305;&#351;mama sebebi budur.', buttons: [] },
+  'Y&#252;k ayr&#305;ld&#305; motor d&#246;nm&#252;yor': { text: 'Motor elle d&#246;nm&#252;yorsa motorda mekaniksel bir s&#305;k&#305;&#351;ma vard&#305;r. Muhtemelen rulman kilitlemi&#351;tir. Varsa motoru yede&#287;i ile de&#287;i&#351;tir ya da bak&#305;m yap.', buttons: [] },
+  'Voltaj normal (motor yan&#305;nda)': { text: '&#350;imdi &#246;nce &#246;l&#231;&#252; aleti ile motorun sa&#287;laml&#305;k kontrol&#252;n&#252; yap. &#214;l&#231;&#252; aletini buzzer konumuna al. &#214;nce motor klemensindeki &#252;&#231; ya da alt&#305; u&#231; ile g&#246;vde aras&#305;nda &#246;l&#231;&#252;m yap, sonra da fazlar aras&#305;nda yap. Yan&#305;k bir motorda genellikle u&#231;lardan bir veya birka&#231;&#305;nda g&#246;vde ile k&#305;sa devre olur ya da fazlar aras&#305;nda bir faz de&#287;er g&#246;stermez; bu motorun yan&#305;k oldu&#287;u anlam&#305;na gelir, etiket bilgisine dikkat ederek motoru de&#287;i&#351;tir. Sa&#287;lam bir motorda fazlar aras&#305;ndaki diren&#231; de&#287;erleri birbirine yak&#305;n ve u&#231;lar ile g&#246;vde aras&#305;nda herhangi bir k&#305;sa devre olmaz.', buttons: [] },
+  'Voltaj normal de&#287;il (motor yan&#305;nda)': { text: 'Kablo hatt&#305;nda sorun var. Motordan panoya giden kabloyu kontrol edin, kopukluk veya ka&#231;ak olabilir.', buttons: [] },
+  'Hay&#305;r': { text: 'Motoru &#231;al&#305;&#351;t&#305;ran kontakt&#246;r &#231;ekiyor mu?', buttons: ['Evet &#231;ekiyor', 'Hay&#305;r &#231;ekmiyor'] },
+  'Hay&#305;r &#231;ekmiyor': { text: 'Motoru &#231;al&#305;&#351;t&#305;ran kontakt&#246;r&#252;n bobin u&#231;lar&#305;na (A1 ve A2) enerji geliyor mu kontrol et. Ama burada kontakt&#246;r&#252;n &#231;al&#305;&#351;ma voltaj&#305;n&#305; bilmen gerekiyor. Genelde kontakt&#246;r &#252;zerinde yazar. (220 volt AC, 110 volt AC, 42 volt AC, 24 volt AC ya da DC, 12 volt AC ya da DC) E&#287;er yazm&#305;yorsa mant&#305;kl&#305; olan &#246;l&#231;&#252; aletini AC moduna al&#305;p ilk &#246;l&#231;&#252;m&#252; bu &#351;ekilde yapmak. E&#287;er herhangi bir de&#287;er g&#246;rmezsen o zaman DC moda al&#305;p &#246;l&#231;&#252;m&#252; &#246;yle yap. E&#287;er bobin u&#231;lar&#305;na enerji gelmiyorsa sistemde kontakt&#246;r&#252; enerjileyen devre eleman&#305;n&#305; kontrol et. (Start butonu, sens&#246;r, sivi&#231;, PLC vs.)', buttons: [] },
+  'Evet &#231;ekiyor': { text: 'Kontakt&#246;r&#252;n giri&#351; ve &#231;&#305;k&#305;&#351; u&#231;lar&#305;ndaki &#252;&#231; faz voltaj de&#287;erlerini &#246;l&#231;. 370 volt ile 410 volt aras&#305;nda olmal&#305;. E&#287;er kontakt&#246;r&#252;n giri&#351; taraf&#305;ndaki &#252;&#231; faz normal ama &#231;&#305;k&#305;&#351; taraf&#305;nda &#252;&#231; faz voltajlar&#305;nda eksiklik varsa ya da voltaj hi&#231; yoksa kontakt&#246;r ar&#305;zal&#305;d&#305;r. (Bu arada faz eksikli&#287;i varsa motor iki faza kal&#305;p termik att&#305;r&#305;r.) E&#287;er kontakt&#246;r&#252;n giri&#351; taraf&#305;nda voltaj yoksa kontakt&#246;re enerji gelmiyor demektir.', buttons: [] },
+  'Var': { text: 'Invert&#246;r ekran&#305;ndaki hata kodunu yaz&#305;n, ar&#305;za analizine yard&#305;mc&#305; olay&#305;m.', buttons: [] },
+  'Yok': { text: 'Invert&#246;rde hata kodu yoksa &#351;unlar&#305; kontrol edin:\n\n1. Invert&#246;r&#252;n &#231;&#305;k&#305;&#351; u&#231;lar&#305;nda (U, V, W) voltaj var m&#305;?\n2. Invert&#246;r&#252;n giri&#351; voltaj&#305; normal mi? (380V i&#231;in yakla&#351;&#305;k 375-405V)\n3. Enable/Run sinyali invert&#246;re geliyor mu?\n4. Referans frekans s&#305;f&#305;r m&#305;?', buttons: [] }
 };
 
 // =====================
@@ -412,8 +412,13 @@ var TREE = {
 var state = null;
 var useAI = false;
 var conversationHistory = [];
-var chat = document.getElementById('chat');
-var modeLabel = document.getElementById('mode-label');
+var chat = null;
+var modeLabel = null;
+
+function initDOM() {
+  chat = document.getElementById('chat');
+  modeLabel = document.getElementById('mode-label');
+}
 
 // =====================
 // UI HELPERS
@@ -424,7 +429,7 @@ function addMsg(text, isUser, isAI) {
 
   var avatar = document.createElement('div');
   avatar.className = 'avatar ' + (isUser ? 'user' : 'bot');
-  avatar.textContent = isUser ? '\ud83d\udc77' : '\u26a1';
+  avatar.textContent = isUser ? '&#128119;' : '&#9889;';
 
   var msgDiv = document.createElement('div');
   msgDiv.className = 'msg ' + (isUser ? 'user' : 'bot');
@@ -432,7 +437,7 @@ function addMsg(text, isUser, isAI) {
   if (isAI && !isUser) {
     var badge = document.createElement('div');
     badge.className = 'ai-badge';
-    badge.textContent = '\u2726 AI MOD';
+    badge.textContent = '&#10022; AI MOD';
     msgDiv.appendChild(badge);
   }
 
@@ -455,7 +460,204 @@ function showTyping() {
 
   var avatar = document.createElement('div');
   avatar.className = 'avatar bot';
-  avatar.textContent = '\u26a1';
+  avatar.textContent = '&#9889;';
 
   var typing = document.createElement('div');
-  typing.className = 'msg bot typing
+  typing.className = 'msg bot typing';
+  typing.innerHTML = '<span></span><span></span><span></span>';
+
+  wrapper.appendChild(avatar);
+  wrapper.appendChild(typing);
+  chat.appendChild(wrapper);
+  chat.scrollTop = chat.scrollHeight;
+}
+
+function removeTyping() {
+  var t = document.getElementById('typing-indicator');
+  if (t) t.remove();
+}
+
+function showButtons(buttons) {
+  var area = document.getElementById('buttons');
+  area.innerHTML = '';
+  for (var i = 0; i < buttons.length; i++) {
+    (function(btn) {
+      var el = document.createElement('button');
+      el.className = 'btn';
+      el.textContent = btn;
+      el.onclick = function() { choose(btn); };
+      area.appendChild(el);
+    })(buttons[i]);
+  }
+}
+
+function setMode(mode) {
+  modeLabel.textContent = mode;
+  modeLabel.style.color = mode === 'AI Modu' ? '#f59e0b' : mode === 'Rehberli Mod' ? '#3b82f6' : '#64748b';
+}
+
+function setSendDisabled(val) {
+  document.getElementById('send-btn').disabled = val;
+  document.getElementById('text-input').disabled = val;
+}
+
+// =====================
+// KARAR A&#286;ACI
+// =====================
+function choose(choice) {
+  addMsg(choice, true, false);
+  var node = TREE[choice];
+  if (!node) return;
+  addMsg(node.text, false, false);
+  state = choice;
+  setMode('Rehberli Mod');
+  if (node.buttons && node.buttons.length > 0) {
+    showButtons(node.buttons);
+  } else {
+    showButtons([]);
+    // Karar a&#287;ac&#305; bitti, AI moduna ge&#231;
+    setTimeout(function() {
+      addMsg('Yukar&#305;daki ad&#305;mlar&#305; uygulad&#305;n&#305;z m&#305;? Ba&#351;ka bir soru veya sorun varsa serbest yazabilirsiniz, AI size yard&#305;mc&#305; olacak.', false, false);
+      useAI = true;
+      setMode('AI Modu');
+    }, 500);
+  }
+}
+
+// =====================
+// AI API
+// =====================
+async function askAI(userMessage) {
+  setSendDisabled(true);
+  showTyping();
+
+  conversationHistory.push({ role: 'user', content: userMessage });
+
+  var systemPrompt = `Sen "ElektroAI" ad&#305;nda uzman bir elektrik bak&#305;m asistan&#305;s&#305;n. 30 y&#305;ll&#305;k elektrik bak&#305;m deneyimine sahip bir ustan&#305;n bilgisiyle donat&#305;ld&#305;n.
+
+Uzmanl&#305;k alanlar&#305;n:
+- End&#252;striyel elektrik motor ar&#305;zalar&#305; (220V ve 380V)
+- Kontakt&#246;r, termik r&#246;le, invert&#246;r, softstarter sistemleri
+- Pano ar&#305;zalar&#305;, sigorta ve kablo sorunlar&#305;
+- PLC ve otomasyon sistemleri
+- &#304;n&#351;aat elektri&#287;i (trifaze, monofaze)
+- Mekanik ve elektrik entegre ar&#305;zalar
+
+Yan&#305;t verirken:
+- &#214;nce g&#252;venlik uyar&#305;s&#305;n&#305; hat&#305;rlat
+- Ad&#305;m ad&#305;m ar&#305;za tespit y&#246;ntemi ver
+- Teknik ama anla&#351;&#305;l&#305;r T&#252;rk&#231;e kullan
+- &#214;l&#231;&#252;m de&#287;erlerini belirt (voltaj, ak&#305;m, diren&#231;)
+- Pratik saha deneyiminden &#246;rnekler ver
+- Kesin bilmiyorsan "kontrol et" de, yanl&#305;&#351; y&#246;nlendirme yapma`;
+
+  try {
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: systemPrompt,
+        messages: conversationHistory
+      })
+    });
+
+    const data = await response.json();
+    removeTyping();
+
+    if (data.content && data.content[0]) {
+      var reply = data.content[0].text;
+      conversationHistory.push({ role: 'assistant', content: reply });
+      addMsg(reply, false, true);
+    } else {
+      addMsg('Bir hata olu&#351;tu. L&#252;tfen tekrar deneyin.', false, true);
+    }
+  } catch (err) {
+    removeTyping();
+    addMsg('Ba&#287;lant&#305; hatas&#305;. &#304;nternet ba&#287;lant&#305;n&#305;z&#305; kontrol edin.', false, false);
+  }
+
+  setSendDisabled(false);
+  document.getElementById('text-input').focus();
+}
+
+// =====================
+// TEXT INPUT
+// =====================
+function sendText() {
+  var input = document.getElementById('text-input');
+  var text = input.value.trim();
+  if (!text) return;
+  input.value = '';
+  addMsg(text, true, false);
+  var lower = text.toLowerCase();
+
+  if (useAI) {
+    askAI(text);
+    return;
+  }
+
+  if (state === null) {
+    var matched = TRIGGERS.some(function(t) { return lower.indexOf(t) !== -1; });
+    if (matched) {
+      var node = TREE['start'];
+      addMsg(node.text, false, false);
+      state = 'start';
+      setMode('Rehberli Mod');
+      showButtons(node.buttons);
+    } else {
+      // Direk AI'a sor
+      useAI = true;
+      setMode('AI Modu');
+      askAI(text);
+    }
+  } else {
+    var node = TREE[state];
+    if (node && node.buttons && node.buttons.length > 0) {
+      var match = null;
+      for (var i = 0; i < node.buttons.length; i++) {
+        if (lower.indexOf(node.buttons[i].toLowerCase()) !== -1) { match = node.buttons[i]; break; }
+      }
+      if (match) {
+        choose(match);
+      } else {
+        // Buton e&#351;le&#351;medi, AI'a y&#246;nlendir
+        useAI = true;
+        setMode('AI Modu');
+        askAI(text);
+      }
+    } else {
+      useAI = true;
+      setMode('AI Modu');
+      askAI(text);
+    }
+  }
+}
+
+// =====================
+// RESET
+// =====================
+function resetChat() {
+  chat.innerHTML = '';
+  document.getElementById('buttons').innerHTML = '';
+  state = null;
+  useAI = false;
+  conversationHistory = [];
+  setMode('Bekleniyor');
+  addMsg('Merhaba! Ben ElektroAI &#8212; elektrik bak&#305;m asistan&#305;n&#305;z&#305;m.\n\nAr&#305;zay&#305; yazarak ba&#351;lay&#305;n veya bir soru sorun.\n&#214;rnek: "Motor &#231;al&#305;&#351;m&#305;yor", "Sigorta at&#305;yor", "Faz eksikli&#287;i var"', false, false);
+}
+
+// =====================
+// INIT
+// =====================
+document.addEventListener('DOMContentLoaded', function() {
+  initDOM();
+  document.getElementById('text-input').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter' && !e.shiftKey) sendText();
+  });
+  resetChat();
+});
+</script>
+</body>
+</html>
