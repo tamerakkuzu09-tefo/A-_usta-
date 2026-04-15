@@ -55,7 +55,7 @@ class Handler(BaseHTTPRequestHandler):
                 err = e.read()
                 self.send_response(500)
                 self.send_header("Content-type", "application/json")
-                self.end_headers()
+                self.end_headers() 
                 self.wfile.write(err)
             except Exception as ex:
                 self.send_response(500)
