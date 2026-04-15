@@ -59,6 +59,7 @@ class Handler(BaseHTTPRequestHandler):
                 self.wfile.write(err)
             except Exception as ex:
                 self.send_response(500)
+                print("GENEL HATA:", str(ex))
                 self.send_header("Content-type", "application/json")
                 self.end_headers()
                 self.wfile.write(json.dumps({"error": str(ex)}).encode())
