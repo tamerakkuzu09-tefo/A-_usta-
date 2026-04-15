@@ -51,6 +51,7 @@ class Handler(BaseHTTPRequestHandler):
                 self.wfile.write(result)
 
             except urllib.error.HTTPError as e:
+                print("API HATA:", e.code, err.decode())
                 err = e.read()
                 self.send_response(500)
                 self.send_header("Content-type", "application/json")
