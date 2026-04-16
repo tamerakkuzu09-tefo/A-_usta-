@@ -20,6 +20,7 @@ class Handler(BaseHTTPRequestHandler):
             length = int(self.headers.get("Content-Length", 0))
             body = self.rfile.read(length)
             try:
+                print("API KEY:", ANTHROPIC_API_KEY[:20] if ANTHROPIC_API_KEY else "BOŞ!")
                 payload = json.loads(body)
                 messages = payload.get("messages", [])
                 system = payload.get("system", "")
@@ -43,7 +44,7 @@ class Handler(BaseHTTPRequestHandler):
                 )
                 with urllib.request.urlopen(req) as res:
                     result = res.read()
-
+                print("BAŞARILI!")
                 self.send_response(200)
                 self.send_header("Content-type", "application/json")
                 self.send_header("Access-Control-Allow-Origin", "*")
@@ -52,14 +53,14 @@ class Handler(BaseHTTPRequestHandler):
 
             except urllib.error.HTTPError as e:
                 err = e.read()
-                print("API HATA:", e.code, err.decode())
+                print("HTTP HATA:", e.code, err.decode())
                 self.send_response(500)
                 self.send_header("Content-type", "application/json")
-                self.end_headers() 
+                self.end_headers()
                 self.wfile.write(err)
             except Exception as ex:
-                self.send_response(500)
                 print("GENEL HATA:", str(ex))
+                self.send_response(500)
                 self.send_header("Content-type", "application/json")
                 self.end_headers()
                 self.wfile.write(json.dumps({"error": str(ex)}).encode())
@@ -73,9 +74,6 @@ class Handler(BaseHTTPRequestHandler):
         self.send_header("Access-Control-Allow-Methods", "POST, GET, OPTIONS")
         self.send_header("Access-Control-Allow-Headers", "Content-Type")
         self.end_headers()
-
-    def log_message(self, format, *args):
-        pass
 
 print(f"Sunucu baslatiliyor: port {PORT}")
 HTTPServer(("0.0.0.0", PORT), Handler).serve_forever()
